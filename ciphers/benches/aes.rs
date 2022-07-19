@@ -9,7 +9,7 @@ mod rustcrypto_aes {
     use aes::cipher::{BlockDecrypt, BlockEncrypt};
     use aes::{Aes128, Block};
 
-    pub fn encrypt() -> impl Fn() -> () {
+    pub fn encrypt() -> impl Fn() {
         let key = [0; 16];
         let ctx = Aes128::new_from_slice(&key).unwrap();
 
@@ -23,7 +23,7 @@ mod rustcrypto_aes {
         }
     }
 
-    pub fn decrypt() -> impl Fn() -> () {
+    pub fn decrypt() -> impl Fn() {
         let key = [0; 16];
         let ctx = Aes128::new_from_slice(&key).unwrap();
 
