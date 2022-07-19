@@ -1,10 +1,13 @@
+use ecdsa::signature::{DigestVerifier, PrehashSignature as PrehashSignatureT};
 use k256::{
     ecdsa::digest::Digest,
-    ecdsa::{SigningKey, Signature, signature::{Signer, DigestSigner}},
-    ecdsa::{VerifyingKey, signature::Verifier},
+    ecdsa::{signature::Verifier, VerifyingKey},
+    ecdsa::{
+        signature::{DigestSigner, Signer},
+        Signature, SigningKey,
+    },
 };
 use rand::rngs::OsRng; // requires 'getrandom' feature
-use ecdsa::signature::{PrehashSignature as PrehashSignatureT, DigestVerifier};
 
 #[test]
 fn k256_sign_verify() {

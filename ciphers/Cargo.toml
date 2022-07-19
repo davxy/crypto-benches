@@ -1,0 +1,17 @@
+[package]
+name = "ciphers"
+version = "0.1.0"
+edition = "2021"
+
+[dev-dependencies]
+criterion = "0.3"
+utils = { path = "../utils" }
+
+cry-rs = { git = "https://github.com/davxy/cry-rs" }
+
+# https://crates.io/crates/aes
+aes = "0.8.1"
+
+[[bench]]
+name = "aes"
+harness = false

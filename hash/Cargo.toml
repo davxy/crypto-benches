@@ -1,0 +1,18 @@
+[package]
+name = "hash"
+version = "0.1.0"
+edition = "2021"
+
+[dev-dependencies]
+criterion = "0.3"
+utils = { path = "../utils" }
+
+sha2 = "0.10.2"
+
+ring = "0.16.20"
+
+cry-rs = { git = "https://github.com/davxy/cry-rs" }
+
+[[bench]]
+name = "sha256"
+harness = false
