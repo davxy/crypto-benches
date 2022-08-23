@@ -1,0 +1,14 @@
+[package]
+name = "bigint"
+version = "0.1.0"
+edition = "2021"
+
+[dev-dependencies]
+criterion = "0.3"
+utils = { path = "../utils" }
+primitive-types = "0.11"
+crypto-bigint = "0.4.8"
+
+[[bench]]
+name = "bigint"
+harness = false
