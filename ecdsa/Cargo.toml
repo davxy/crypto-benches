@@ -5,16 +5,16 @@ edition = "2021"
 
 [dev-dependencies]
 utils = { path = "../utils" }
-criterion = "0.3"
-rand = "0.8.4"
-sha2 = "0.10.1"
+criterion = "0.3.6"
+rand = "0.8.5"
+sha2 = "0.10.2"
 
-secp256k1 = { version = "0.21.2", features = ["bitcoin_hashes", "rand-std"] }
+secp256k1 = { version = "0.24.0", features = ["bitcoin_hashes", "rand-std"] }
 
-k256 = { version = "0.10.2", features = ["ecdsa"] }
-ecdsa = "0.13.4"
+k256 = { version = "0.11.4", features = ["ecdsa"] }
+ecdsa = "0.14.4"
 
-libsecp256k1 = "0.7.0"
+libsecp256k1 = "0.7.1"
 
 [[bench]]
 name = "k256"

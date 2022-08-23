@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dev-dependencies]
-criterion = "0.3"
+criterion = "0.3.6"
 utils = { path = "../utils" }
 
 cry-rs = { git = "https://github.com/davxy/cry-rs" }

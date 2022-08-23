@@ -4,9 +4,9 @@ version = "0.1.0"
 edition = "2021"
 
 [dev-dependencies]
-criterion = "0.3"
+criterion = "0.3.6"
 utils = { path = "../utils" }
-primitive-types = "0.11"
+primitive-types = "0.11.1"
 crypto-bigint = "0.4.8"
 
 [[bench]]

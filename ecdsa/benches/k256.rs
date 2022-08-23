@@ -2,7 +2,7 @@ use criterion::{criterion_group, criterion_main, Criterion};
 use utils::run_bench;
 
 mod rustcrypto_k256 {
-    use ecdsa::signature::{DigestVerifier, PrehashSignature as PrehashSignatureT};
+    use ecdsa::signature::{digest::Update, DigestVerifier, PrehashSignature as PrehashSignatureT};
     use k256::ecdsa::{
         digest::Digest, signature::DigestSigner, Signature, SigningKey, VerifyingKey,
     };
@@ -64,8 +64,7 @@ mod secp256k1 {
     pub fn sign() -> impl Fn() {
         let secp = Secp256k1::new();
         let hash = Message::from_slice(&[0; 32]).unwrap();
-        let mut rng = OsRng::new().unwrap();
-        let (secret_key, _) = secp.generate_keypair(&mut rng);
+        let (secret_key, _) = secp.generate_keypair(&mut OsRng);
 
         move || {
             let _ = secp.sign_ecdsa(&hash, &secret_key);
@@ -75,8 +74,7 @@ mod secp256k1 {
     pub fn verify() -> impl Fn() {
         let secp = Secp256k1::new();
         let hash = Message::from_slice(&[0; 32]).unwrap();
-        let mut rng = OsRng::new().unwrap();
-        let (secret_key, public_key) = secp.generate_keypair(&mut rng);
+        let (secret_key, public_key) = secp.generate_keypair(&mut OsRng);
         let sig = secp.sign_ecdsa(&hash, &secret_key);
 
         move || {
