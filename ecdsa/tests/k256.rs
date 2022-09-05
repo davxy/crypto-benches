@@ -1,12 +1,9 @@
 mod rust_crypto {
-    use ecdsa::signature::{DigestVerifier, PrehashSignature as PrehashSignatureT};
-    use k256::{
-        ecdsa::digest::Digest,
-        ecdsa::{signature::Verifier, VerifyingKey},
-        ecdsa::{
-            signature::{DigestSigner, Signer},
-            Signature, SigningKey,
-        },
+    use ecdsa::signature::{
+        digest::Update, DigestVerifier, PrehashSignature as PrehashSignatureT, Signer, Verifier,
+    };
+    use k256::ecdsa::{
+        digest::Digest, signature::DigestSigner, Signature, SigningKey, VerifyingKey,
     };
     use rand::rngs::OsRng;
 
@@ -60,8 +57,7 @@ mod secp256k1 {
         let secp = Secp256k1::new();
         let hash = Message::from_slice(&[0; 32]).unwrap();
 
-        let mut rng = OsRng::new().unwrap();
-        let (secret_key, public_key) = secp.generate_keypair(&mut rng);
+        let (secret_key, public_key) = secp.generate_keypair(&mut OsRng);
 
         let sig = secp.sign_ecdsa(&hash, &secret_key);
 
