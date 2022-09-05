@@ -2,6 +2,7 @@
 
 members = [
     "utils",
+    "misc",
     "bigint",
     "ciphers",
     "ecdsa",
