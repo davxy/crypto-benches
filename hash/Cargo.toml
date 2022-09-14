@@ -6,13 +6,16 @@ edition = "2021"
 [dev-dependencies]
 criterion = "0.3.6"
 utils = { path = "../utils" }
-
 sha2 = "0.10.2"
-
 ring = "0.16.20"
-
+blake2-rfc = "0.2.18"
+blake2 = "0.10.2"
 cry-rs = { git = "https://github.com/davxy/cry-rs" }
 
 [[bench]]
 name = "sha256"
+harness = false
+
+[[bench]]
+name = "blake2"
 harness = false
