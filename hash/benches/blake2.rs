@@ -1,7 +1,7 @@
 use criterion::{criterion_group, criterion_main, Criterion};
 use utils::{run_bench, DUMMY_BUF_DATA};
 
-mod rustcrypto {
+mod rust_crypto_benches {
     use super::*;
     use blake2::{Digest, Blake2b, digest::typenum::{U32, U64}};
 
@@ -26,7 +26,7 @@ mod rustcrypto {
     }
 }
 
-mod blake2_rfc_crate {
+mod blake2_rfc_benches {
     use super::*;
     use blake2_rfc::blake2b::Blake2b;
 
@@ -54,13 +54,13 @@ mod blake2_rfc_crate {
 fn blake2(c: &mut Criterion) {
     {
         let mut group = c.benchmark_group("blake2-256");
-        run_bench("blake2-rfc", &mut group, blake2_rfc_crate::hash_256());
-        run_bench("rust-crypto", &mut group, rustcrypto::hash_256());
+        run_bench("blake2-rfc", &mut group, blake2_rfc_benches::hash_256());
+        run_bench("rust-crypto", &mut group, rust_crypto_benches::hash_256());
     }
     {
         let mut group = c.benchmark_group("blake2-512");
-        run_bench("blake2-rfc", &mut group, blake2_rfc_crate::hash_512());
-        run_bench("rust-crypto", &mut group, rustcrypto::hash_512());
+        run_bench("blake2-rfc", &mut group, blake2_rfc_benches::hash_512());
+        run_bench("rust-crypto", &mut group, rust_crypto_benches::hash_512());
     }
 }
 

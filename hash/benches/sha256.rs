@@ -1,7 +1,7 @@
 use criterion::{criterion_group, criterion_main, Criterion};
 use utils::{run_bench, DUMMY_BUF_DATA};
 
-mod cry {
+mod cry_benches {
     use super::*;
     use cry_rs::sha256::Sha256;
 
@@ -15,7 +15,7 @@ mod cry {
     }
 }
 
-mod rustcrypto {
+mod rust_crypto_benches {
     use super::*;
     use sha2::{Digest, Sha256};
 
@@ -28,7 +28,7 @@ mod rustcrypto {
     }
 }
 
-mod crate_ring {
+mod ring_benches {
     use super::*;
     use ring::digest::{self, Context};
 
@@ -43,9 +43,10 @@ mod crate_ring {
 
 fn sha256(c: &mut Criterion) {
     let mut group = c.benchmark_group("sha256");
-    run_bench("rust-crypto", &mut group, rustcrypto::hash());
-    run_bench("ring", &mut group, crate_ring::hash());
-    run_bench("cry", &mut group, cry::hash());
+
+    run_bench("rust-crypto", &mut group, rust_crypto_benches::hash());
+    run_bench("ring", &mut group, ring_benches::hash());
+    run_bench("cry", &mut group, cry_benches::hash());
 }
 
 criterion_group!(benches, sha256);
