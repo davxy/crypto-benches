@@ -8,6 +8,8 @@ criterion = "0.3.6"
 utils = { path = "../utils" }
 primitive-types = "0.11.1"
 crypto-bigint = "0.4.8"
+num = "0.4.0"
+cry-rs = { git = "https://github.com/davxy/cry-rs" }
 
 [[bench]]
 name = "bigint"
