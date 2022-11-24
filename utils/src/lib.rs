@@ -1,8 +1,14 @@
 use criterion::{measurement::WallTime, BenchmarkGroup};
 
 pub mod hex {
-    pub use hex::{encode, decode};
+    pub use hex::{decode, encode};
 }
+
+pub mod rng {
+    pub use rand::rngs::OsRng;
+}
+
+pub use lazy_static;
 
 pub const DUMMY_BUF_SIZE: usize = 4096;
 pub const DUMMY_BUF_DATA: [u8; DUMMY_BUF_SIZE] = [0; DUMMY_BUF_SIZE];

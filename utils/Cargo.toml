@@ -5,4 +5,6 @@ edition = "2021"
 
 [dependencies]
 criterion = { version = "0.3.6", features = ["html_reports"] }
+rand = "0.8.5"
+lazy_static = "1.4.0"
 hex = "0.4.3"

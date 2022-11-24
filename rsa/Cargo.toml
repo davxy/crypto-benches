@@ -1,0 +1,15 @@
+[package]
+name = "rsa"
+version = "0.1.0"
+edition = "2021"
+
+[dev-dependencies]
+criterion = "0.3.6"
+utils = { path = "../utils" }
+
+rsa = "0.7.2"
+sha2 = "0.10.6"
+
+[[bench]]
+name = "rsa"
+harness = false

@@ -4,6 +4,7 @@ members = [
     "utils",
     "misc",
     "bigint",
+    "rsa",
     "ciphers",
     "ecdsa",
     "hash",
