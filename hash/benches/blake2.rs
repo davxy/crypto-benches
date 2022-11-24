@@ -3,7 +3,10 @@ use utils::{run_bench, DUMMY_BUF_DATA};
 
 mod rust_crypto_benches {
     use super::*;
-    use blake2::{Digest, Blake2b, digest::typenum::{U32, U64}};
+    use blake2::{
+        digest::typenum::{U32, U64},
+        Blake2b, Digest,
+    };
 
     pub fn hash_256() -> impl Fn() {
         move || {

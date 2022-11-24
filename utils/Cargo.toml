@@ -5,3 +5,4 @@ edition = "2021"
 
 [dependencies]
 criterion = { version = "0.3.6", features = ["html_reports"] }
+hex = "0.4.3"
