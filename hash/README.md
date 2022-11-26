@@ -1,5 +1,7 @@
 # Hash Benches
 
+Incremental hash of three 4K buffers.
+
 ## SHA-256
 
 Comparison between:
@@ -10,9 +12,9 @@ Comparison between:
 ### Hash
 
 ```
-* rust-crypto   time:   [1.9360 µs 1.9366 µs 1.9372 µs]
-* ring          time:   [8.0719 µs 8.0739 µs 8.0759 µs]
-* cry-rs        time:   [17.019 µs 17.039 µs 17.069 µs]
+* rust-crypto   time:   [5.6890 µs 5.6903 µs 5.6917 µs]
+* ring          time:   [23.813 µs 23.865 µs 23.922 µs]
+* cry-rs        time:   [49.442 µs 49.454 µs 49.469 µs]
 ```
 
 ## Blake2
@@ -34,3 +36,21 @@ Comparison between:
 * rust-crypto  time:   [11.084 µs 11.089 µs 11.094 µs]
 * blake2-rfc   time:   [11.099 µs 11.103 µs 11.108 µs]
 ```
+
+## Blake3
+
+Comparison between:
+- [blake3](https://crates.io/crates/blake3)
+
+### Hash 256
+
+```
+* blake3       time:   [4.0565 µs 4.0585 µs 4.0602 µs]
+```
+
+### Hash 512
+
+```
+* blake3       time:   [4.0572 µs 4.0611 µs 4.0659 µs]
+```
+

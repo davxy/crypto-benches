@@ -10,6 +10,8 @@ mod cry_benches {
             let mut ctx = Sha256::new();
             ctx.clear();
             ctx.update(&DUMMY_BUF_DATA);
+            ctx.update(&DUMMY_BUF_DATA);
+            ctx.update(&DUMMY_BUF_DATA);
             let _ = ctx.digest();
         }
     }
@@ -23,6 +25,8 @@ mod rust_crypto_benches {
         move || {
             let mut ctx = Sha256::new();
             ctx.update(&DUMMY_BUF_DATA);
+            ctx.update(&DUMMY_BUF_DATA);
+            ctx.update(&DUMMY_BUF_DATA);
             let _ = ctx.finalize();
         }
     }
@@ -35,6 +39,8 @@ mod ring_benches {
     pub fn hash() -> impl Fn() {
         move || {
             let mut ctx = Context::new(&digest::SHA256);
+            ctx.update(&DUMMY_BUF_DATA);
+            ctx.update(&DUMMY_BUF_DATA);
             ctx.update(&DUMMY_BUF_DATA);
             let _ = ctx.finish();
         }

@@ -11,6 +11,7 @@ ring = "0.16.20"
 blake2-rfc = "0.2.18"
 blake2 = "0.10.4"
 cry-rs = { git = "https://github.com/davxy/cry-rs" }
+blake3 = "1.3.3"
 
 [[bench]]
 name = "sha256"
@@ -18,4 +19,8 @@ harness = false
 
 [[bench]]
 name = "blake2"
+harness = false
+
+[[bench]]
+name = "blake3"
 harness = false
