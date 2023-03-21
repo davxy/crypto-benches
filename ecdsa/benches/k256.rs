@@ -2,9 +2,12 @@ use criterion::{criterion_group, criterion_main, Criterion};
 use utils::run_bench;
 
 mod rustcrypto_k256 {
-    use ecdsa::signature::{digest::Update, DigestVerifier, PrehashSignature as PrehashSignatureT};
     use k256::ecdsa::{
-        digest::Digest, signature::DigestSigner, Signature, SigningKey, VerifyingKey,
+        signature::{
+            digest::{Digest, Update},
+            DigestSigner, DigestVerifier, PrehashSignature as PrehashSignatureT,
+        },
+        Signature, SigningKey, VerifyingKey,
     };
     use rand::rngs::OsRng;
 
@@ -27,6 +30,19 @@ mod rustcrypto_k256 {
                                                            //
         move || {
             let _ = verify_key.verify_digest(digest.clone(), &sig).is_ok();
+        }
+    }
+
+    pub fn verify_recoverable() -> impl Fn() {
+        let digest = <Signature as PrehashSignatureT>::Digest::new();
+        let digest = digest.chain(b"HelloWorld");
+        let signing_key = SigningKey::random(&mut OsRng); // Serialize with `::to_bytes()`
+        let (sig, recid) = signing_key.sign_digest_recoverable(digest.clone()).unwrap();
+        let verify_key = VerifyingKey::from(&signing_key); // Serialize with `::to_encoded_point()`
+                                                           //
+        move || {
+            let recovered = VerifyingKey::recover_from_digest(digest.clone(), &sig, recid).unwrap();
+            let _res = recovered == verify_key;
         }
     }
 }
@@ -81,6 +97,18 @@ mod secp256k1 {
             let _ = secp.verify_ecdsa(&hash, &sig, &public_key).unwrap();
         }
     }
+
+    pub fn verify_recoverable() -> impl Fn() {
+        let secp = Secp256k1::new();
+        let hash = Message::from_slice(&[0; 32]).unwrap();
+        let (secret_key, public_key) = secp.generate_keypair(&mut OsRng);
+        let sig = secp.sign_ecdsa_recoverable(&hash, &secret_key);
+
+        move || {
+            let rec = secp.recover_ecdsa(&hash, &sig).unwrap();
+            assert_eq!(rec, public_key);
+        }
+    }
 }
 
 fn k256(c: &mut Criterion) {
@@ -93,8 +121,18 @@ fn k256(c: &mut Criterion) {
     {
         let mut group = c.benchmark_group("k256-verify");
         run_bench("rust-crypto", &mut group, rustcrypto_k256::verify());
+        run_bench(
+            "rust-crypto (rec)",
+            &mut group,
+            rustcrypto_k256::verify_recoverable(),
+        );
         run_bench("libsecp256k1", &mut group, libsecp256k1::verify());
         run_bench("secp256k1", &mut group, secp256k1::verify());
+        run_bench(
+            "secp256k1 (rec)",
+            &mut group,
+            secp256k1::verify_recoverable(),
+        );
     }
 }
 

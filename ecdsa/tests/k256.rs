@@ -1,9 +1,10 @@
 mod rust_crypto {
-    use ecdsa::signature::{
-        digest::Update, DigestVerifier, PrehashSignature as PrehashSignatureT, Signer, Verifier,
-    };
     use k256::ecdsa::{
-        digest::Digest, signature::DigestSigner, Signature, SigningKey, VerifyingKey,
+        signature::{
+            digest::{Digest, Update},
+            DigestSigner, DigestVerifier, PrehashSignature as PrehashSignatureT, Signer, Verifier,
+        },
+        Signature, SigningKey, VerifyingKey,
     };
     use rand::rngs::OsRng;
 
@@ -28,6 +29,21 @@ mod rust_crypto {
 
         let verify_key = VerifyingKey::from(&signing_key); // Serialize with `::to_encoded_point()`
         assert!(verify_key.verify_digest(digest, &sig).is_ok());
+    }
+
+    #[test]
+    fn sign_verify2() {
+        use k256::ecdsa::RecoveryId;
+        let message = b"HelloWorld";
+
+        let signing_key = SigningKey::random(&mut OsRng); // Serialize with `::to_bytes()`
+        let (sig, _recid) = signing_key.sign_recoverable(message).unwrap();
+
+        println!("LEN: {:?}", sig.to_bytes().len());
+
+        let verify_key = VerifyingKey::from(&signing_key); // Serialize with `::to_encoded_point()`
+
+        RecoveryId::trial_recovery_from_msg(&verify_key, message, &sig).unwrap();
     }
 }
 
