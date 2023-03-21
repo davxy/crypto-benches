@@ -8,7 +8,6 @@ criterion = "0.3.6"
 utils = { path = "../utils" }
 
 cry-rs = { git = "https://github.com/davxy/cry-rs" }
-smile-utils = { git = "https://github.com/davxy/smile" }
 base64 = "0.13.0"
 
 [[bench]]

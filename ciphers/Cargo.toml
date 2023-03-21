@@ -7,11 +7,17 @@ edition = "2021"
 criterion = "0.3.6"
 utils = { path = "../utils" }
 
+# CRY
 cry-rs = { git = "https://github.com/davxy/cry-rs" }
 
-# https://crates.io/crates/aes
+# RustCrypto
 aes = "0.8.1"
+des = "0.8.1"
 
 [[bench]]
 name = "aes"
+harness = false
+
+[[bench]]
+name = "des"
 harness = false

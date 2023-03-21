@@ -3,7 +3,7 @@ use utils::run_bench;
 
 const NBLOCKS: usize = 1024;
 
-mod rustcrypto_aes {
+mod rust_crypto_aes {
     use super::*;
     use aes::cipher::KeyInit;
     use aes::cipher::{BlockDecrypt, BlockEncrypt};
@@ -66,13 +66,13 @@ mod cry_aes {
 fn aes128(c: &mut Criterion) {
     {
         let mut group = c.benchmark_group("aes-128-encrypt");
-        run_bench("rust-crypto", &mut group, rustcrypto_aes::encrypt());
+        run_bench("rust-crypto", &mut group, rust_crypto_aes::encrypt());
         run_bench("cry-rs", &mut group, cry_aes::encrypt());
     }
 
     {
         let mut group = c.benchmark_group("aes-128-decrypt");
-        run_bench("rust-crypto", &mut group, rustcrypto_aes::decrypt());
+        run_bench("rust-crypto", &mut group, rust_crypto_aes::decrypt());
         run_bench("cry-rs", &mut group, cry_aes::decrypt());
     }
 }
