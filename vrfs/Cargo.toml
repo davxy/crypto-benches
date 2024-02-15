@@ -1,0 +1,20 @@
+[package]
+name = "vrfs"
+version = "0.1.0"
+edition = "2021"
+
+[dev-dependencies]
+utils = { path = "../utils" }
+criterion = "0.3.6"
+rand = "0.8.5"
+schnorrkel = "0.11.4"
+bandersnatch_vrfs = { git = "https://github.com/w3f/ring-vrf" }
+# bandersnatch_vrfs = { git = "https://github.com/w3f/ring-vrf", default-features = false }
+
+[[bench]]
+name = "vrfs"
+harness = false
+
+[dependencies]
+ark-transcript = "0.0.1"
+merlin = "3.0.0"

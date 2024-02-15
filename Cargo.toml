@@ -1,5 +1,7 @@
 [workspace]
 
+resolver = "2"
+
 members = [
     "utils",
     "misc",
@@ -8,4 +10,5 @@ members = [
     "ciphers",
     "ecdsa",
     "hash",
+    "vrfs",
 ]
