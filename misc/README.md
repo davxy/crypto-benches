@@ -3,7 +3,7 @@
 ## Base64 codecs
 
 Comparison between:
-- [base64](https://crates.io/crates/base64)
+- [base64](https://crates.io/crates/base64) (0.21.7)
 - [cry-rs](https://github.com/davxy/cry)
 - [smile](https://github.com/davxy/smile)
 

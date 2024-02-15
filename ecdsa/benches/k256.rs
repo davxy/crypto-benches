@@ -79,7 +79,7 @@ mod secp256k1 {
 
     pub fn sign() -> impl Fn() {
         let secp = Secp256k1::new();
-        let hash = Message::from_slice(&[0; 32]).unwrap();
+        let hash = Message::from_digest_slice(&[0; 32]).unwrap();
         let (secret_key, _) = secp.generate_keypair(&mut OsRng);
 
         move || {
@@ -89,7 +89,7 @@ mod secp256k1 {
 
     pub fn verify() -> impl Fn() {
         let secp = Secp256k1::new();
-        let hash = Message::from_slice(&[0; 32]).unwrap();
+        let hash = Message::from_digest_slice(&[0; 32]).unwrap();
         let (secret_key, public_key) = secp.generate_keypair(&mut OsRng);
         let sig = secp.sign_ecdsa(&hash, &secret_key);
 
@@ -100,7 +100,7 @@ mod secp256k1 {
 
     pub fn verify_recoverable() -> impl Fn() {
         let secp = Secp256k1::new();
-        let hash = Message::from_slice(&[0; 32]).unwrap();
+        let hash = Message::from_digest_slice(&[0; 32]).unwrap();
         let (secret_key, public_key) = secp.generate_keypair(&mut OsRng);
         let sig = secp.sign_ecdsa_recoverable(&hash, &secret_key);
 

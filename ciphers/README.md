@@ -3,7 +3,7 @@
 ## AES
 
 Comparison between:
-- [rust-crypto-aes](https://crates.io/crates/aes) (0.8.2)
+- [rust-crypto-aes](https://crates.io/crates/aes) (0.8.4)
 - [cry-rs](https://github.com/davxy/cry) (0.1.3)
 
 ### Encrypt

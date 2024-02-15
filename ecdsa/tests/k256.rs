@@ -71,7 +71,7 @@ mod secp256k1 {
     #[test]
     fn sign_verify_prehash() {
         let secp = Secp256k1::new();
-        let hash = Message::from_slice(&[0; 32]).unwrap();
+        let hash = Message::from_digest_slice(&[0; 32]).unwrap();
 
         let (secret_key, public_key) = secp.generate_keypair(&mut OsRng);
 

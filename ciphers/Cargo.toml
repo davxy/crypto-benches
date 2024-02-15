@@ -4,14 +4,14 @@ version = "0.1.0"
 edition = "2021"
 
 [dev-dependencies]
-criterion = "0.3.6"
+criterion = "0.5.1"
 utils = { path = "../utils" }
 
 # CRY
 cry-rs = { git = "https://github.com/davxy/cry-rs" }
 
 # RustCrypto
-aes = "0.8.1"
+aes = "0.8.4"
 des = "0.8.1"
 
 [[bench]]

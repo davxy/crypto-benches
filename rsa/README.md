@@ -1,7 +1,7 @@
 # RSA
 
 Comparison between:
-- [rust-crypto-rsa](https://crates.io/crates/rsa)
+- [rust-crypto-rsa](https://crates.io/crates/rsa) (0.9.6)
 
 ### PKCS#1 v1.5 Sign
 

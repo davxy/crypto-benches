@@ -4,11 +4,11 @@ version = "0.1.0"
 edition = "2021"
 
 [dev-dependencies]
-criterion = "0.3.6"
+criterion = "0.5.1"
 utils = { path = "../utils" }
 
 cry-rs = { git = "https://github.com/davxy/cry-rs" }
-base64 = "0.13.0"
+base64 = "0.21.7"
 
 [[bench]]
 name = "base64"

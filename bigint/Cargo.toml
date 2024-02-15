@@ -4,11 +4,11 @@ version = "0.1.0"
 edition = "2021"
 
 [dev-dependencies]
-criterion = "0.3.6"
+criterion = "0.5.1"
 utils = { path = "../utils" }
-primitive-types = "0.11.1"
-crypto-bigint = "0.4.8"
-num = "0.4.0"
+primitive-types = "0.12.2"
+crypto-bigint = "0.5.5"
+num = "0.4.1"
 cry-rs = { git = "https://github.com/davxy/cry-rs" }
 
 [[bench]]

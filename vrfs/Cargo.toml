@@ -5,7 +5,7 @@ edition = "2021"
 
 [dev-dependencies]
 utils = { path = "../utils" }
-criterion = "0.3.6"
+criterion = "0.5.1"
 rand = "0.8.5"
 schnorrkel = "0.11.4"
 bandersnatch_vrfs = { git = "https://github.com/w3f/ring-vrf" }

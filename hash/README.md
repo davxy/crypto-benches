@@ -5,8 +5,8 @@ Incremental hash of three 4K buffers.
 ## SHA-256
 
 Comparison between:
-- [rust-crypto](https://crates.io/crates/sha2)
-- [ring](https://crates.io/crates/ring)
+- [rust-crypto](https://crates.io/crates/sha2) (0.10.8)
+- [ring](https://crates.io/crates/ring) (0.17.7)
 - [cry-rs](https://github.com/davxy/cry)
 
 ### Hash
@@ -20,8 +20,8 @@ Comparison between:
 ## Blake2
 
 Comparison between:
-- [rust-crypto](https://crates.io/crates/sha2)
-- [blake2-rfc](https://crates.io/crates/blake2-rfc)
+- [rust-crypto](https://crates.io/crates/blake2) (0.10.6)
+- [blake2-rfc](https://crates.io/crates/blake2-rfc) (0.2.18)
 
 ### Hash 256
 
@@ -40,7 +40,7 @@ Comparison between:
 ## Blake3
 
 Comparison between:
-- [blake3](https://crates.io/crates/blake3)
+- [blake3](https://crates.io/crates/blake3) (1.5.0)
 
 ### Hash 256
 

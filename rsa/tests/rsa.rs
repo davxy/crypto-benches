@@ -4,7 +4,7 @@ const KEY_BITS: usize = 2048;
 
 mod rust_crypto {
     use super::*;
-    use rsa::{PaddingScheme, PublicKey, RsaPrivateKey, RsaPublicKey};
+    use rsa::{Pkcs1v15Encrypt, Pkcs1v15Sign, RsaPrivateKey, RsaPublicKey};
 
     lazy_static::lazy_static! {
         static ref PRIVATE_KEY: RsaPrivateKey = RsaPrivateKey::new(&mut OsRng, KEY_BITS).unwrap();
@@ -17,13 +17,12 @@ mod rust_crypto {
         let public_key = &PUBLIC_KEY;
         let dummy_digest = [0; 32];
 
-        let padding = PaddingScheme::new_pkcs1v15_sign_raw();
-        let signature = private_key.sign(padding, &dummy_digest).unwrap();
+        let scheme = Pkcs1v15Sign::new_unprefixed();
+        let signature = private_key.sign(scheme.clone(), &dummy_digest).unwrap();
 
         println!("Signature: {}", hex::encode(&signature));
 
-        let padding = PaddingScheme::new_pkcs1v15_sign_raw();
-        let res = public_key.verify(padding, &dummy_digest, &signature);
+        let res = public_key.verify(scheme, &dummy_digest, &signature);
 
         assert!(res.is_ok());
     }
@@ -35,13 +34,13 @@ mod rust_crypto {
         // 1960 bits (=245 bytes) is the max allowed length with 2028 bit key
         let msg = [0_u8; 245];
 
-        let padding = PaddingScheme::new_pkcs1v15_encrypt();
-        let ciphertext = public_key.encrypt(&mut OsRng, padding, &msg).unwrap();
+        let ciphertext = public_key
+            .encrypt(&mut OsRng, Pkcs1v15Encrypt, &msg)
+            .unwrap();
 
         println!("Ciphertext: {}", hex::encode(&ciphertext));
 
-        let padding = PaddingScheme::new_pkcs1v15_encrypt();
-        let msg_dec = private_key.decrypt(padding, &ciphertext).unwrap();
+        let msg_dec = private_key.decrypt(Pkcs1v15Encrypt, &ciphertext).unwrap();
 
         assert_eq!(msg.as_slice(), msg_dec);
     }

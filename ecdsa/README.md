@@ -3,9 +3,9 @@
 ## Curve secp-256k1
 
 Comparison between:
-- [rust-crypto-k256](https://crates.io/crates/k256) (0.13.0)
+- [rust-crypto-k256](https://crates.io/crates/k256) (0.13.3)
 - [libsecp256k1](https://crates.io/crates/libsecp256k1) (0.7.1)
-- [secp256k1](https://crates.io/crates/secp256k1) (0.24.1)
+- [secp256k1](https://crates.io/crates/secp256k1) (0.28.2)
 
 ### Sign Prehashed
 
