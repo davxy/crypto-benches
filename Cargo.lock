@@ -327,7 +327,7 @@ dependencies = [
  "ark-ff",
  "ark-serialize",
  "ark-std",
- "ark-transcript 0.0.2",
+ "ark-transcript",
  "digest 0.10.7",
  "getrandom_or_panic",
  "zeroize",
@@ -365,19 +365,6 @@ dependencies = [
  "num-traits",
  "rand",
  "rayon",
-]
-
-[[package]]
-name = "ark-transcript"
-version = "0.0.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "30de87f65287cb3afd0cc92409e230f4fffca627b60c56a9773481f27f6fad90"
-dependencies = [
- "ark-ff",
- "ark-serialize",
- "ark-std",
- "rand_core",
- "sha3",
 ]
 
 [[package]]
@@ -465,12 +452,6 @@ name = "base16ct"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4c7f02d4ea65f2c1853089ffd8d2787bdbc63de2f0d29dedbcf8ccdfa0ccd4cf"
-
-[[package]]
-name = "base58"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6107fe1be6682a68940da878d9e9f5e90ca5745b3dec9fd1bb393c8777d4f581"
 
 [[package]]
 name = "base64"
@@ -607,12 +588,6 @@ checksum = "3078c7629b62d3f0439517fa394996acacc5cbc91c5a20d8c658e77abd503a71"
 dependencies = [
  "generic-array",
 ]
-
-[[package]]
-name = "bs58"
-version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "771fe0050b883fcc3ea2359b1a96bcfbc090b7116eae7c3c512c7a083fdf23d3"
 
 [[package]]
 name = "bumpalo"
@@ -1069,7 +1044,7 @@ dependencies = [
  "ark-secret-scalar",
  "ark-serialize",
  "ark-std",
- "ark-transcript 0.0.2",
+ "ark-transcript",
  "arrayvec 0.7.4",
  "zeroize",
 ]
@@ -1778,9 +1753,7 @@ checksum = "68354c5c6bd36d73ff3feceb05efa59b6acb7626617f4962be322a825e61f79a"
 name = "misc"
 version = "0.1.0"
 dependencies = [
- "base58",
  "base64",
- "bs58",
  "criterion",
  "cry-rs",
  "utils",
@@ -3108,7 +3081,6 @@ checksum = "49874b5167b65d7193b8aba1567f5c7d93d001cafc34600cee003eda787e483f"
 name = "vrfs"
 version = "0.1.0"
 dependencies = [
- "ark-transcript 0.0.1",
  "bandersnatch_vrfs",
  "criterion",
  "merlin",

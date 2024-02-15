@@ -16,5 +16,4 @@ name = "vrfs"
 harness = false
 
 [dependencies]
-ark-transcript = "0.0.1"
 merlin = "3.0.0"
