@@ -17,12 +17,12 @@ mod rust_crypto {
         let public_key = &PUBLIC_KEY;
         let dummy_digest = [0; 32];
 
-        let scheme = Pkcs1v15Sign::new_unprefixed();
-        let signature = private_key.sign(scheme.clone(), &dummy_digest).unwrap();
+        let padding = Pkcs1v15Sign::new_unprefixed();
+        let signature = private_key.sign(padding.clone(), &dummy_digest).unwrap();
 
         println!("Signature: {}", hex::encode(&signature));
 
-        let res = public_key.verify(scheme, &dummy_digest, &signature);
+        let res = public_key.verify(padding, &dummy_digest, &signature);
 
         assert!(res.is_ok());
     }

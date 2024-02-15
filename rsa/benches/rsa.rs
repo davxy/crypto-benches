@@ -5,7 +5,7 @@ const KEY_BITS: usize = 2048;
 
 mod rust_crypto_rsa {
     use super::*;
-    use rsa::{PaddingScheme, PublicKey, RsaPrivateKey, RsaPublicKey};
+    use rsa::{Pkcs1v15Encrypt, Pkcs1v15Sign, RsaPrivateKey, RsaPublicKey};
 
     lazy_static! {
         static ref PRIVATE_KEY: RsaPrivateKey = RsaPrivateKey::new(&mut OsRng, KEY_BITS).unwrap();
@@ -15,10 +15,10 @@ mod rust_crypto_rsa {
     pub fn sign() -> impl Fn() {
         let private_key: &RsaPrivateKey = &PRIVATE_KEY;
         let dummy_digest = [0; 32];
+        let padding = Pkcs1v15Sign::new_unprefixed();
 
         move || {
-            let padding = PaddingScheme::new_pkcs1v15_sign_raw();
-            private_key.sign(padding, &dummy_digest).unwrap();
+            private_key.sign(padding.clone(), &dummy_digest).unwrap();
         }
     }
 
@@ -26,14 +26,13 @@ mod rust_crypto_rsa {
         let private_key: &RsaPrivateKey = &PRIVATE_KEY;
         let public_key: &RsaPublicKey = &PUBLIC_KEY;
         let dummy_digest = [0; 32];
+        let padding = Pkcs1v15Sign::new_unprefixed();
 
-        let padding = PaddingScheme::new_pkcs1v15_sign_raw();
-        let signature = private_key.sign(padding, &dummy_digest).unwrap();
+        let signature = private_key.sign(padding.clone(), &dummy_digest).unwrap();
 
         move || {
-            let padding = PaddingScheme::new_pkcs1v15_sign_raw();
             public_key
-                .verify(padding, &dummy_digest, &signature.clone())
+                .verify(padding.clone(), &dummy_digest, &signature.clone())
                 .unwrap();
         }
     }
@@ -43,9 +42,8 @@ mod rust_crypto_rsa {
         let dummy_data = [0; 32];
 
         move || {
-            let padding = PaddingScheme::new_pkcs1v15_encrypt();
             public_key
-                .encrypt(&mut OsRng, padding, &dummy_data)
+                .encrypt(&mut OsRng, Pkcs1v15Encrypt, &dummy_data)
                 .unwrap();
         }
     }
@@ -55,14 +53,12 @@ mod rust_crypto_rsa {
         let public_key: &RsaPublicKey = &PUBLIC_KEY;
         let dummy_data = [0; 32];
 
-        let padding = PaddingScheme::new_pkcs1v15_encrypt();
         let ciphertext = public_key
-            .encrypt(&mut OsRng, padding, &dummy_data)
+            .encrypt(&mut OsRng, Pkcs1v15Encrypt, &dummy_data)
             .unwrap();
 
         move || {
-            let padding = PaddingScheme::new_pkcs1v15_encrypt();
-            private_key.decrypt(padding, &ciphertext).unwrap();
+            private_key.decrypt(Pkcs1v15Encrypt, &ciphertext).unwrap();
         }
     }
 }

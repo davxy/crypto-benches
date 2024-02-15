@@ -27,17 +27,17 @@ mod cry {
 
 mod base64_crate {
     use super::*;
-    use base64 as base64_crate;
+    use base64::{engine::general_purpose::STANDARD, Engine};
 
     pub fn base64_encode() -> impl Fn() {
         move || {
-            let _ = base64_crate::encode(BYTES);
+            let _ = STANDARD.encode(BYTES);
         }
     }
 
     pub fn base64_decode() -> impl Fn() {
         move || {
-            let _ = base64_crate::decode(STRING);
+            let _ = STANDARD.decode(STRING);
         }
     }
 }
