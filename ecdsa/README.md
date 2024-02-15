@@ -18,7 +18,7 @@ Comparison between:
 ### Verify Prehashed
 
 ```
-* rust-crypto     time: [88.997 µs 89.014 µs 89.032 µs]    
+* rust-crypto     time: [86.744 µs 86.786 µs 86.827 µs]
 * libsecp256k1    time: [137.86 µs 137.93 µs 137.99 µs]
 * secp256k1       time: [31.669 µs 31.697 µs 31.747 µs]
 ```

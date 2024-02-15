@@ -13,7 +13,7 @@ Comparison between:
 
 ```
 * rust-crypto   time:   [5.6890 µs 5.6903 µs 5.6917 µs]
-* ring          time:   [23.813 µs 23.865 µs 23.922 µs]
+* ring          time:   [5.7503 µs 5.7520 µs 5.7538 µs]
 * cry-rs        time:   [49.442 µs 49.454 µs 49.469 µs]
 ```
 
@@ -26,14 +26,14 @@ Comparison between:
 ### Hash 256
 
 ```
-* rust-crypto  time:   [11.061 µs 11.065 µs 11.070 µs]
+* rust-crypto  time:   [10.928 µs 10.932 µs 10.937 µs]
 * blake2-rfc   time:   [11.121 µs 11.124 µs 11.128 µs]
 ```
 
 ### Hash 512
 
 ```
-* rust-crypto  time:   [11.084 µs 11.089 µs 11.094 µs]
+* rust-crypto  time:   [10.977 µs 10.982 µs 10.989 µs]
 * blake2-rfc   time:   [11.099 µs 11.103 µs 11.108 µs]
 ```
 

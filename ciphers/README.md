@@ -9,22 +9,22 @@ Comparison between:
 ### Encrypt
 
 ```
-* rust-crypto   time:   [1.7700 µs 1.7702 µs 1.7703 µs]
-* cry-rs        time:   [41.297 µs 41.310 µs 41.325 µs]
+* rust-crypto   time:   [1.7451 µs 1.7455 µs 1.7460 µs]
+* cry-rs        time:   [40.536 µs 40.609 µs 40.717 µs]
 ```
 
 ### Decrypt
 
 ```
-* rust-crypto   time:   [1.8068 µs 1.8074 µs 1.8081 µs]
-* cry-rs        time:   [41.120 µs 41.132 µs 41.143 µs]
+* rust-crypto   time:   [1.8126 µs 1.8153 µs 1.8180 µs]
+* cry-rs        time:   [43.092 µs 43.148 µs 43.226 µs]
 ```
 
 ## DES
 
 Comparison between:
-- [rust-crypto-aes](https://crates.io/crates/des) 0.8.1
-- [cry-rs](https://github.com/davxy/cry) 0.1.3
+- [rust-crypto-aes](https://crates.io/crates/des) (0.8.1)
+- [cry-rs](https://github.com/davxy/cry) (0.1.3)
 
 ### Encrypt
 
@@ -36,6 +36,6 @@ Comparison between:
 ### Decrypt
 
 ```
-* rust-crypto   time:   [185.44 µs 186.00 µs 186.71 µs]
+* rust-crypto   time:   [180.31 µs 180.40 µs 180.50 µs]
 * cry-rs        time:   [2.6102 ms 2.6136 ms 2.6171 ms]
 ```

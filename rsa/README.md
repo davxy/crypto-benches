@@ -12,13 +12,13 @@ Comparison between:
 ### PKCS#1 v1.5 Verify
 
 ```
-* rust-crypto   time:   [172.02 µs 172.07 µs 172.12 µs]
+* rust-crypto   time:   [166.10 µs 166.23 µs 166.39 µs]
 ```
 
 ### PKCS#1 v1.5 Encrypt
 
 ```
-* rust-crypto   time:   [172.29 µs 172.38 µs 172.48 µs]
+* rust-crypto   time:   [167.34 µs 167.39 µs 167.45 µs]
 ```
 
 ### PKCS#1 v1.5 Decrypt
