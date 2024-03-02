@@ -7,13 +7,14 @@ edition = "2021"
 utils = { path = "../utils" }
 criterion = "0.5.1"
 rand = "0.8.5"
+merlin = "3.0.0"
 schnorrkel = "0.11.4"
 bandersnatch_vrfs = { git = "https://github.com/w3f/ring-vrf" }
-# bandersnatch_vrfs = { git = "https://github.com/w3f/ring-vrf", default-features = false }
 
 [[bench]]
 name = "vrfs"
 harness = false
 
-[dependencies]
-merlin = "3.0.0"
+[[bench]]
+name = "ring-vrfs"
+harness = false
