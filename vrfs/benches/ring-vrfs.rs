@@ -55,7 +55,7 @@ mod bandersnatch {
         }
     }
 
-    pub fn sign(domain_size: u32) -> impl Fn() {
+    pub fn prove(domain_size: u32) -> impl Fn() {
         let ctx = TestContext::new(domain_size);
 
         let transcript = Transcript::new_labeled(b"label");
@@ -146,7 +146,7 @@ fn vrfs(c: &mut Criterion) {
             &mut group,
             bandersnatch::make_prover(DOMAIN_SIZE),
         );
-        run_bench("sign", &mut group, bandersnatch::sign(DOMAIN_SIZE));
+        run_bench("sign", &mut group, bandersnatch::prove(DOMAIN_SIZE));
 
         run_bench(
             "make-verifier-key",
@@ -173,7 +173,7 @@ fn vrfs(c: &mut Criterion) {
             &mut group,
             bandersnatch::make_prover(DOMAIN_SIZE),
         );
-        run_bench("sign", &mut group, bandersnatch::sign(DOMAIN_SIZE));
+        run_bench("sign", &mut group, bandersnatch::prove(DOMAIN_SIZE));
 
         run_bench(
             "make-verifier-key",
@@ -200,7 +200,7 @@ fn vrfs(c: &mut Criterion) {
             &mut group,
             bandersnatch::make_prover(DOMAIN_SIZE),
         );
-        run_bench("sign", &mut group, bandersnatch::sign(DOMAIN_SIZE));
+        run_bench("sign", &mut group, bandersnatch::prove(DOMAIN_SIZE));
 
         run_bench(
             "make-verifier-key",
