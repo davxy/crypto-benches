@@ -12,4 +12,6 @@ Reported results were obtained on the following machine:
 * [ECDSA](ecdsa/README.md)
 * [Hash](hash/README.md)
 * [Ciphers](ciphers/README.md)
+* [RSA](rsa/README.md)
+* [VRF](vrf/README.md)
 * [Misc](misc/README.md)
