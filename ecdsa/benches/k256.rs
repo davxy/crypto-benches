@@ -14,8 +14,8 @@ mod rustcrypto_k256 {
     pub fn sign() -> impl Fn() {
         let digest = <Signature as PrehashSignatureT>::Digest::new();
         let digest = digest.chain(b"HelloWorld");
-        let signing_key = SigningKey::random(&mut OsRng); // Serialize with `::to_bytes()`
-                                                          //
+        let signing_key = SigningKey::random(&mut OsRng);
+
         move || {
             let _: Signature = signing_key.sign_digest(digest.clone());
         }
@@ -24,10 +24,10 @@ mod rustcrypto_k256 {
     pub fn verify() -> impl Fn() {
         let digest = <Signature as PrehashSignatureT>::Digest::new();
         let digest = digest.chain(b"HelloWorld");
-        let signing_key = SigningKey::random(&mut OsRng); // Serialize with `::to_bytes()`
+        let signing_key = SigningKey::random(&mut OsRng);
         let sig: Signature = signing_key.sign_digest(digest.clone());
-        let verify_key = VerifyingKey::from(&signing_key); // Serialize with `::to_encoded_point()`
-                                                           //
+        let verify_key = VerifyingKey::from(&signing_key);
+
         move || {
             let _ = verify_key.verify_digest(digest.clone(), &sig).is_ok();
         }
@@ -36,10 +36,10 @@ mod rustcrypto_k256 {
     pub fn verify_recoverable() -> impl Fn() {
         let digest = <Signature as PrehashSignatureT>::Digest::new();
         let digest = digest.chain(b"HelloWorld");
-        let signing_key = SigningKey::random(&mut OsRng); // Serialize with `::to_bytes()`
+        let signing_key = SigningKey::random(&mut OsRng);
         let (sig, recid) = signing_key.sign_digest_recoverable(digest.clone()).unwrap();
-        let verify_key = VerifyingKey::from(&signing_key); // Serialize with `::to_encoded_point()`
-                                                           //
+        let verify_key = VerifyingKey::from(&signing_key);
+
         move || {
             let recovered = VerifyingKey::recover_from_digest(digest.clone(), &sig, recid).unwrap();
             let _res = recovered == verify_key;

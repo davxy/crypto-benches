@@ -12,10 +12,10 @@ mod rust_crypto {
     fn sign_verify() {
         let message = b"HelloWorld";
 
-        let signing_key = SigningKey::random(&mut OsRng); // Serialize with `::to_bytes()`
+        let signing_key = SigningKey::random(&mut OsRng);
         let sig: Signature = signing_key.sign(message);
 
-        let verify_key = VerifyingKey::from(&signing_key); // Serialize with `::to_encoded_point()`
+        let verify_key = VerifyingKey::from(&signing_key);
         assert!(verify_key.verify(message, &sig).is_ok());
     }
 
@@ -24,26 +24,26 @@ mod rust_crypto {
         let digest = <Signature as PrehashSignatureT>::Digest::new();
         let digest = digest.chain(b"HelloWorld");
 
-        let signing_key = SigningKey::random(&mut OsRng); // Serialize with `::to_bytes()`
+        let signing_key = SigningKey::random(&mut OsRng);
         let sig: Signature = signing_key.sign_digest(digest.clone());
 
-        let verify_key = VerifyingKey::from(&signing_key); // Serialize with `::to_encoded_point()`
+        let verify_key = VerifyingKey::from(&signing_key);
         assert!(verify_key.verify_digest(digest, &sig).is_ok());
     }
 
     #[test]
-    fn sign_verify2() {
-        use k256::ecdsa::RecoveryId;
-        let message = b"HelloWorld";
+    fn sign_verify_prehash_with_key_recovery() {
+        let digest = [0_u8; 32];
 
-        let signing_key = SigningKey::random(&mut OsRng); // Serialize with `::to_bytes()`
-        let (sig, _recid) = signing_key.sign_recoverable(message).unwrap();
+        let signing_key = SigningKey::random(&mut OsRng);
+        let verify_key = VerifyingKey::from(&signing_key);
 
-        println!("LEN: {:?}", sig.to_bytes().len());
+        let (sig, rid) = signing_key
+            .sign_prehash_recoverable(digest.as_slice())
+            .unwrap();
 
-        let verify_key = VerifyingKey::from(&signing_key); // Serialize with `::to_encoded_point()`
-
-        RecoveryId::trial_recovery_from_msg(&verify_key, message, &sig).unwrap();
+        let recovered = VerifyingKey::recover_from_prehash(&digest, &sig, rid).unwrap();
+        assert_eq!(verify_key, recovered);
     }
 }
 
@@ -78,5 +78,17 @@ mod secp256k1 {
         let sig = secp.sign_ecdsa(&hash, &secret_key);
 
         assert!(secp.verify_ecdsa(&hash, &sig, &public_key).is_ok());
+    }
+
+    #[test]
+    fn sign_verify_prehash_with_key_recovery() {
+        let secp = Secp256k1::new();
+        let hash = Message::from_digest_slice(&[0; 32]).unwrap();
+        let (secret_key, public_key) = secp.generate_keypair(&mut OsRng);
+
+        let rec_sig = secp.sign_ecdsa_recoverable(&hash, &secret_key);
+
+        let recovered = secp.recover_ecdsa(&hash, &rec_sig).unwrap();
+        assert_eq!(public_key, recovered);
     }
 }
