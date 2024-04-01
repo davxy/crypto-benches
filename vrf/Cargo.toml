@@ -1,5 +1,5 @@
 [package]
-name = "vrfs"
+name = "vrf"
 version = "0.1.0"
 edition = "2021"
 
@@ -10,6 +10,11 @@ rand = "0.8.5"
 merlin = "3.0.0"
 schnorrkel = "0.11.4"
 bandersnatch_vrfs = { git = "https://github.com/davxy/ring-vrf", branch = "pending-approval", features = ["parallel"] }
+
+ark-ecvrf = { git = "https://github.com/davxy/ark-ecvrf" }
+ark-ed-on-bls12-381-bandersnatch = "0.4.0"
+ark-ec = "0.4.2"
+ark-ff = "0.4.2"
 
 [[bench]]
 name = "vrfs"

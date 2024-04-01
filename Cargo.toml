@@ -10,5 +10,8 @@ members = [
     "ciphers",
     "ecdsa",
     "hash",
-    "vrfs",
+    "vrf",
 ]
+
+[patch."http://github.com/davxy/ark-ecvrf"]
+ark-ecvrf = { path = "/home/davxy/develop/projs/ark-ecvrf" }

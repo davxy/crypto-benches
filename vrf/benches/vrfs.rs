@@ -26,15 +26,38 @@ mod schnorrkel {
             let _res = public.vrf_verify(transcript.clone(), &pre_output, &signature);
         }
     }
+}
 
-    pub fn vrf_bytes() -> impl Fn() {
-        let secret = Keypair::generate_with(OsRng);
-        let transcript = Transcript::new(b"label");
-        let inout = secret.vrf_create_hash(transcript.clone());
+mod ietf_ecvrf {
+    use ark_ec::{AffineRepr, CurveGroup};
+    use ark_ed_on_bls12_381_bandersnatch as curve;
+    use ark_ff::PrimeField;
+
+    type P = curve::EdwardsAffine;
+    type Secret = ark_ecvrf::Secret<P>;
+
+    fn make_dummy_point(s: u32) -> P {
+        let s = <P as AffineRepr>::ScalarField::from_be_bytes_mod_order(&s.to_be_bytes()[..]);
+        (P::generator() * s).into_affine()
+    }
+
+    pub fn sign() -> impl Fn() {
+        let input = make_dummy_point(3);
+        let secret = Secret::from_seed([0u8; 32]);
 
         move || {
-            let _transcript = transcript.clone();
-            let _bytes = inout.make_bytes::<[u8; 32]>(b"out");
+            let _sig = secret.sign(input.into(), b"ad");
+        }
+    }
+
+    pub fn verify() -> impl Fn() {
+        let input = make_dummy_point(3).into();
+        let secret = Secret::from_seed([0u8; 32]);
+        let public = secret.public();
+        let signature = secret.sign(input, b"ad");
+
+        move || {
+            let _ = public.verify(input, b"ad", &signature);
         }
     }
 }
@@ -74,38 +97,20 @@ mod bandersnatch {
                 public.verify_thin_vrf(transcript.clone(), core::iter::once(input), &signature);
         }
     }
-
-    pub fn vrf_bytes() -> impl Fn() {
-        let secret = SecretKey::ephemeral();
-        let transcript = Transcript::new_labeled(b"label");
-        let input = Message {
-            domain: b"domain",
-            message: b"message",
-        }
-        .into_vrf_input();
-        let inout = secret.vrf_inout(input);
-
-        move || {
-            let _bytes = inout.vrf_output_bytes::<32>(transcript.clone());
-        }
-    }
 }
 
 fn vrfs(c: &mut Criterion) {
     {
         let mut group = c.benchmark_group("sign");
         run_bench("schnorrkel", &mut group, schnorrkel::sign());
+        run_bench("ietf_ecvrf", &mut group, ietf_ecvrf::sign());
         run_bench("bandersnatch", &mut group, bandersnatch::sign());
     }
     {
         let mut group = c.benchmark_group("verify");
         run_bench("schnorrkel", &mut group, schnorrkel::verify());
+        run_bench("ietf_ecvrf", &mut group, ietf_ecvrf::verify());
         run_bench("bandersnatch", &mut group, bandersnatch::verify());
-    }
-    {
-        let mut group = c.benchmark_group("vrf-bytes");
-        run_bench("schnorrkel", &mut group, schnorrkel::vrf_bytes());
-        run_bench("bandersnatch", &mut group, bandersnatch::vrf_bytes());
     }
 }
 
