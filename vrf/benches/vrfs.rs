@@ -6,7 +6,7 @@ mod schnorrkel {
     use rand::rngs::OsRng;
     use schnorrkel::Keypair;
 
-    pub fn sign() -> impl Fn() {
+    pub fn prove() -> impl Fn() {
         let secret = Keypair::generate_with(OsRng);
         let transcript = Transcript::new(b"label");
 
@@ -28,44 +28,175 @@ mod schnorrkel {
     }
 }
 
-mod ietf_ecvrf {
-    use ark_ec::{AffineRepr, CurveGroup};
-    use ark_ed_on_bls12_381_bandersnatch as curve;
-    use ark_ff::PrimeField;
+mod ark_ec_vrf_ed25519 {
+    use ark_ec_vrfs::{
+        ietf::{Prover, Verifier},
+        suites::ed25519::*,
+    };
+    use ark_std::UniformRand;
 
-    type P = curve::EdwardsAffine;
-    type Secret = ark_ecvrf::Secret<P>;
+    const SEED: &[u8] = b"test";
 
-    fn make_dummy_point(s: u32) -> P {
-        let s = <P as AffineRepr>::ScalarField::from_be_bytes_mod_order(&s.to_be_bytes()[..]);
-        (P::generator() * s).into_affine()
+    fn dummy_input() -> Input {
+        let mut rng = ark_std::test_rng();
+        let p = AffinePoint::rand(&mut rng);
+        Input::from(p)
     }
 
-    pub fn sign() -> impl Fn() {
-        let input = make_dummy_point(3);
-        let secret = Secret::from_seed([0u8; 32]);
+    pub fn prove() -> impl Fn() {
+        let secret = Secret::from_seed(SEED);
+        let input = dummy_input();
+        let output = secret.output(input);
 
         move || {
-            let _sig = secret.sign(input.into(), b"ad");
+            let _sig = secret.prove(input, output, b"ad");
         }
     }
 
     pub fn verify() -> impl Fn() {
-        let input = make_dummy_point(3).into();
-        let secret = Secret::from_seed([0u8; 32]);
+        let secret = Secret::from_seed(SEED);
         let public = secret.public();
-        let signature = secret.sign(input, b"ad");
+        let input = dummy_input();
+        let output = secret.output(input);
+        let proof = secret.prove(input, output, b"ad");
 
         move || {
-            let _ = public.verify(input, b"ad", &signature);
+            let _ = public.verify(input, output, b"ad", &proof);
         }
     }
 }
 
-mod bandersnatch {
+mod ark_ec_vrf_bandersnatch_sha512_ws {
+    use ark_ec_vrfs::{
+        ietf::{Prover, Verifier},
+        suites::bandersnatch::weierstrass::*,
+    };
+    use ark_std::UniformRand;
+
+    const SEED: &[u8] = b"test";
+
+    fn dummy_input() -> Input {
+        let mut rng = ark_std::test_rng();
+        let p = AffinePoint::rand(&mut rng);
+        Input::from(p)
+    }
+
+    pub fn prove() -> impl Fn() {
+        let secret = Secret::from_seed(SEED);
+        let input = dummy_input();
+        let output = secret.output(input);
+
+        move || {
+            let _proof = secret.prove(input, output, b"ad");
+        }
+    }
+
+    pub fn verify() -> impl Fn() {
+        let secret = Secret::from_seed(SEED);
+        let public = secret.public();
+        let input = dummy_input();
+        let output = secret.output(input);
+        let proof = secret.prove(input, output, b"ad");
+
+        move || {
+            let _ = public.verify(input, output, b"ad", &proof);
+        }
+    }
+}
+
+mod ark_ec_vrf_bandersnatch_sha512_ed {
+    use ark_ec_vrfs::{
+        ietf::{Prover, Verifier},
+        suites::bandersnatch::edwards::*,
+    };
+    use ark_std::UniformRand;
+
+    const SEED: &[u8] = b"test";
+
+    fn dummy_input() -> Input {
+        let mut rng = ark_std::test_rng();
+        let p = AffinePoint::rand(&mut rng);
+        Input::from(p)
+    }
+
+    pub fn prove() -> impl Fn() {
+        let secret = Secret::from_seed(SEED);
+        let input = dummy_input();
+        let output = secret.output(input);
+
+        move || {
+            let _proof = secret.prove(input, output, b"ad");
+        }
+    }
+
+    pub fn verify() -> impl Fn() {
+        let secret = Secret::from_seed(SEED);
+        let public = secret.public();
+        let input = dummy_input();
+        let output = secret.output(input);
+        let proof = secret.prove(input, output, b"ad");
+
+        move || {
+            let _ = public.verify(input, output, b"ad", &proof);
+        }
+    }
+}
+
+mod ark_ec_vrf_bandersnatch_blake2_ed {
+    use ark_ec_vrfs::{
+        ietf::{Prover, Verifier},
+        suite_types, Suite,
+    };
+    use ark_std::UniformRand;
+
+    #[derive(Debug, Clone, Copy)]
+    struct BandersnatchBlake2b512;
+
+    impl Suite for BandersnatchBlake2b512 {
+        const SUITE_ID: u8 = 0x00;
+        const CHALLENGE_LEN: usize = 32;
+
+        type Affine = ark_ed_on_bls12_381_bandersnatch::SWAffine;
+        type Hasher = blake2::Blake2b512;
+    }
+
+    suite_types!(BandersnatchBlake2b512);
+
+    const SEED: &[u8] = b"test";
+
+    fn dummy_input() -> Input {
+        let mut rng = ark_std::test_rng();
+        let p = AffinePoint::rand(&mut rng);
+        Input::from(p)
+    }
+
+    pub fn prove() -> impl Fn() {
+        let secret = Secret::from_seed(SEED);
+        let input = dummy_input();
+        let output = secret.output(input);
+
+        move || {
+            let _proof = secret.prove(input, output, b"ad");
+        }
+    }
+
+    pub fn verify() -> impl Fn() {
+        let secret = Secret::from_seed(SEED);
+        let public = secret.public();
+        let input = dummy_input();
+        let output = secret.output(input);
+        let signature = secret.prove(input, output, b"ad");
+
+        move || {
+            let _ = public.verify(input, output, b"ad", &signature);
+        }
+    }
+}
+
+mod bandersnatch_vrfs {
     use bandersnatch_vrfs::{IntoVrfInput, Message, SecretKey, ThinVrfSignature, Transcript};
 
-    pub fn sign() -> impl Fn() {
+    pub fn prove() -> impl Fn() {
         let secret = SecretKey::ephemeral();
         let transcript = Transcript::new_labeled(b"label");
         let input = Message {
@@ -76,7 +207,7 @@ mod bandersnatch {
         let io = secret.vrf_inout(input);
 
         move || {
-            let _sig: ThinVrfSignature<1> = secret.sign_thin_vrf(transcript.clone(), &[io]);
+            let _proof: ThinVrfSignature<1> = secret.sign_thin_vrf(transcript.clone(), &[io]);
         }
     }
 
@@ -90,27 +221,64 @@ mod bandersnatch {
         }
         .into_vrf_input();
         let io = secret.vrf_inout(input);
-        let signature: ThinVrfSignature<1> = secret.sign_thin_vrf(transcript.clone(), &[io]);
+        let proof: ThinVrfSignature<1> = secret.sign_thin_vrf(transcript.clone(), &[io]);
 
         move || {
-            let _res =
-                public.verify_thin_vrf(transcript.clone(), core::iter::once(input), &signature);
+            let _res = public.verify_thin_vrf(transcript.clone(), core::iter::once(input), &proof);
         }
     }
 }
 
 fn vrfs(c: &mut Criterion) {
     {
-        let mut group = c.benchmark_group("sign");
-        run_bench("schnorrkel", &mut group, schnorrkel::sign());
-        run_bench("ietf_ecvrf", &mut group, ietf_ecvrf::sign());
-        run_bench("bandersnatch", &mut group, bandersnatch::sign());
+        let mut group = c.benchmark_group("prove");
+        run_bench("schnorrkel", &mut group, schnorrkel::prove());
+        run_bench(
+            "ark_ec_vrf_ed25519",
+            &mut group,
+            ark_ec_vrf_ed25519::prove(),
+        );
+        run_bench(
+            "ark-ec-vrf-bandersnatch-sha512-ws",
+            &mut group,
+            ark_ec_vrf_bandersnatch_sha512_ws::prove(),
+        );
+        run_bench(
+            "ark-ec-vrf-bandersnatch-sha512-ed",
+            &mut group,
+            ark_ec_vrf_bandersnatch_sha512_ed::prove(),
+        );
+        run_bench(
+            "ark-ec-vrf-bandersnatch-blake2-ed",
+            &mut group,
+            ark_ec_vrf_bandersnatch_blake2_ed::prove(),
+        );
+        run_bench("bandersnatch-vrfs", &mut group, bandersnatch_vrfs::prove());
     }
     {
         let mut group = c.benchmark_group("verify");
         run_bench("schnorrkel", &mut group, schnorrkel::verify());
-        run_bench("ietf_ecvrf", &mut group, ietf_ecvrf::verify());
-        run_bench("bandersnatch", &mut group, bandersnatch::verify());
+        run_bench(
+            "ark_ec_vrf_ed25519",
+            &mut group,
+            ark_ec_vrf_ed25519::verify(),
+        );
+        run_bench(
+            "ark-ec-vrf_bandersnatch-sha512-ws",
+            &mut group,
+            ark_ec_vrf_bandersnatch_sha512_ws::verify(),
+        );
+        run_bench(
+            "ark-ec-vrf_bandersnatch-sha512-ed",
+            &mut group,
+            ark_ec_vrf_bandersnatch_sha512_ed::verify(),
+        );
+        run_bench(
+            "ark-ec-vrf-bandersnatch-blake2b-ed",
+            &mut group,
+            ark_ec_vrf_bandersnatch_blake2_ed::verify(),
+        );
+        run_bench("bandersnatch-vrfs", &mut group, bandersnatch_vrfs::verify());
     }
 }
 

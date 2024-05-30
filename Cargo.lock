@@ -180,6 +180,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "ark-curve25519"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4ab653b3eff27100f7dcb06b94785f2fbe0d1230408df55d543ee0ef48cd8760"
+dependencies = [
+ "ark-ec",
+ "ark-ff",
+ "ark-std",
+]
+
+[[package]]
 name = "ark-ec"
 version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -198,15 +209,27 @@ dependencies = [
 ]
 
 [[package]]
-name = "ark-ecvrf"
+name = "ark-ec-vrfs"
 version = "0.1.0"
+source = "git+https://github.com/davxy/ark-ec-vrfs#9344064dff8de7253f3957db578454db272ea1d5"
 dependencies = [
+ "ark-bls12-381",
  "ark-ec",
+ "ark-ed-on-bls12-381-bandersnatch",
+ "ark-ed25519",
  "ark-ff",
+ "ark-secp256r1",
  "ark-serialize",
  "ark-std",
+ "digest 0.10.7",
+ "fflonk",
+ "hmac 0.12.1",
+ "merlin",
+ "rand_chacha",
  "rand_core",
+ "ring 0.1.0",
  "sha2 0.10.8",
+ "zeroize",
 ]
 
 [[package]]
@@ -256,6 +279,18 @@ dependencies = [
  "ark-ed-on-bls12-381-bandersnatch",
  "ark-ff",
  "ark-models-ext",
+ "ark-std",
+]
+
+[[package]]
+name = "ark-ed25519"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5c7ed5162ef7c978cfefffcd08cd8393d174836ae1c9fc8fa2dfcd5c2f03a4a9"
+dependencies = [
+ "ark-curve25519",
+ "ark-ec",
+ "ark-ff",
  "ark-std",
 ]
 
@@ -342,6 +377,17 @@ dependencies = [
  "ark-std",
  "parity-scale-codec",
  "scale-info",
+]
+
+[[package]]
+name = "ark-secp256r1"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3975a01b0a6e3eae0f72ec7ca8598a6620fc72fa5981f6f5cca33b7cd788f633"
+dependencies = [
+ "ark-ec",
+ "ark-ff",
+ "ark-std",
 ]
 
 [[package]]
@@ -1222,6 +1268,7 @@ dependencies = [
  "ark-serialize",
  "ark-std",
  "merlin",
+ "rayon",
 ]
 
 [[package]]
@@ -1765,11 +1812,17 @@ checksum = "68354c5c6bd36d73ff3feceb05efa59b6acb7626617f4962be322a825e61f79a"
 name = "misc"
 version = "0.1.0"
 dependencies = [
+ "ark-ec",
+ "ark-ed-on-bls12-381-bandersnatch",
+ "ark-ff",
+ "ark-std",
  "base58",
  "base64 0.21.7",
  "bs58",
  "criterion",
  "cry-rs",
+ "rand_core",
+ "rayon",
  "utils",
 ]
 
@@ -2174,9 +2227,9 @@ dependencies = [
 
 [[package]]
 name = "rayon"
-version = "1.9.0"
+version = "1.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e4963ed1bc86e4f3ee217022bd855b297cef07fb9eac5dfa1f788b220b49b3bd"
+checksum = "b418a60154510ca1a002a752ca9714984e21e4241e804d32555251faf8b78ffa"
 dependencies = [
  "either",
  "rayon-core",
@@ -3045,11 +3098,11 @@ checksum = "49874b5167b65d7193b8aba1567f5c7d93d001cafc34600cee003eda787e483f"
 name = "vrf"
 version = "0.1.0"
 dependencies = [
- "ark-ec",
- "ark-ecvrf",
+ "ark-ec-vrfs",
  "ark-ed-on-bls12-381-bandersnatch",
- "ark-ff",
+ "ark-std",
  "bandersnatch_vrfs",
+ "blake2",
  "criterion",
  "merlin",
  "rand",

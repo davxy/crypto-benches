@@ -1,7 +1,223 @@
 use criterion::{criterion_group, criterion_main, Criterion};
 use utils::run_bench;
 
-mod bandersnatch {
+mod ark_ec_vrfs_bandersnatch_ed {
+    use ark_ec_vrfs::ring::{Prover, Verifier};
+    use ark_ec_vrfs::suites::bandersnatch::edwards::*;
+
+    struct TestContext {
+        ctx: RingContext,
+        pks: Vec<Public>,
+        sk: Secret,
+        sk_idx: usize,
+    }
+
+    fn secret_from_u32(value: u32) -> Secret {
+        let mut seed = [0; 32];
+        seed[0..4].copy_from_slice(&value.to_le_bytes());
+        Secret::from_seed(&seed)
+    }
+
+    impl TestContext {
+        pub fn new(domain_size: usize) -> Self {
+            let ctx = RingContext::from_seed(domain_size, [0; 32]);
+            let ring_size = ctx.keyset_max_size();
+            let pks: Vec<_> = (0..ring_size)
+                .map(|i| secret_from_u32(i as u32).public())
+                .collect();
+            let sk = secret_from_u32(3);
+            Self {
+                ctx,
+                pks,
+                sk,
+                sk_idx: 3,
+            }
+        }
+    }
+
+    pub fn make_prover_key(domain_size: usize) -> impl Fn() {
+        let ctx = TestContext::new(domain_size);
+
+        let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
+        move || {
+            let _prover_key = ctx.ctx.prover_key(&pks);
+        }
+    }
+
+    pub fn make_prover(domain_size: usize) -> impl Fn() {
+        let ctx = TestContext::new(domain_size);
+        let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
+
+        move || {
+            let prover_key = ctx.ctx.prover_key(&pks);
+            let _prover = ctx.ctx.prover(prover_key, ctx.sk_idx);
+        }
+    }
+
+    pub fn prove(domain_size: usize) -> impl Fn() {
+        let ctx = TestContext::new(domain_size);
+
+        let input = Input::new(b"hello").unwrap();
+        let output = ctx.sk.output(input);
+
+        let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
+
+        move || {
+            let prover_key = ctx.ctx.prover_key(&pks);
+            let prover = ctx.ctx.prover(prover_key, ctx.sk_idx);
+            let _proof = ctx.sk.prove(input, output, b"foo", &prover);
+        }
+    }
+
+    pub fn make_verifier_key(domain_size: usize) -> impl Fn() {
+        let ctx = TestContext::new(domain_size);
+        let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
+
+        move || {
+            let _verifier_key = ctx.ctx.verifier_key(&pks);
+        }
+    }
+
+    pub fn make_verifier(domain_size: usize) -> impl Fn() {
+        let ctx = TestContext::new(domain_size);
+        let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
+        let verifier_key = ctx.ctx.verifier_key(&pks);
+
+        move || {
+            let _verifier = ctx.ctx.verifier(verifier_key.clone());
+        }
+    }
+
+    pub fn verify(domain_size: usize) -> impl Fn() {
+        let ctx = TestContext::new(domain_size);
+
+        let input = Input::new(b"hello").unwrap();
+        let output = ctx.sk.output(input);
+
+        let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
+
+        let prover_key = ctx.ctx.prover_key(&pks);
+        let prover = ctx.ctx.prover(prover_key, ctx.sk_idx);
+        let proof = ctx.sk.prove(input, output, b"foo", &prover);
+
+        let verifier_key = ctx.ctx.verifier_key(&pks);
+        let verifier = ctx.ctx.verifier(verifier_key);
+
+        move || {
+            let _result = Public::verify(input, output, b"foo", &proof, &verifier).unwrap();
+        }
+    }
+}
+
+mod ark_ec_vrfs_bandersnatch_ws {
+    use ark_ec_vrfs::ring::{Prover, Verifier};
+    use ark_ec_vrfs::suites::bandersnatch::weierstrass::*;
+
+    struct TestContext {
+        ctx: RingContext,
+        pks: Vec<Public>,
+        sk: Secret,
+        sk_idx: usize,
+    }
+
+    fn secret_from_u32(value: u32) -> Secret {
+        let mut seed = [0; 32];
+        seed[0..4].copy_from_slice(&value.to_le_bytes());
+        Secret::from_seed(&seed)
+    }
+
+    impl TestContext {
+        pub fn new(domain_size: usize) -> Self {
+            let ctx = RingContext::from_seed(domain_size, [0; 32]);
+            let ring_size = ctx.keyset_max_size();
+            let pks: Vec<_> = (0..ring_size)
+                .map(|i| secret_from_u32(i as u32).public())
+                .collect();
+            let sk = secret_from_u32(3);
+            Self {
+                ctx,
+                pks,
+                sk,
+                sk_idx: 3,
+            }
+        }
+    }
+
+    pub fn make_prover_key(domain_size: usize) -> impl Fn() {
+        let ctx = TestContext::new(domain_size);
+        let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
+
+        move || {
+            let _prover_key = ctx.ctx.prover_key(&pks);
+        }
+    }
+
+    pub fn make_prover(domain_size: usize) -> impl Fn() {
+        let ctx = TestContext::new(domain_size);
+        let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
+
+        move || {
+            let prover_key = ctx.ctx.prover_key(&pks);
+            let _prover = ctx.ctx.prover(prover_key, ctx.sk_idx);
+        }
+    }
+
+    pub fn prove(domain_size: usize) -> impl Fn() {
+        let ctx = TestContext::new(domain_size);
+
+        let input = Input::new(b"hello").unwrap();
+        let output = ctx.sk.output(input);
+
+        let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
+
+        move || {
+            let prover_key = ctx.ctx.prover_key(&pks);
+            let prover = ctx.ctx.prover(prover_key, ctx.sk_idx);
+            let _proof = ctx.sk.prove(input, output, b"foo", &prover);
+        }
+    }
+
+    pub fn make_verifier_key(domain_size: usize) -> impl Fn() {
+        let ctx = TestContext::new(domain_size);
+        let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
+
+        move || {
+            let _verifier_key = ctx.ctx.verifier_key(&pks);
+        }
+    }
+
+    pub fn make_verifier(domain_size: usize) -> impl Fn() {
+        let ctx = TestContext::new(domain_size);
+        let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
+        let verifier_key = ctx.ctx.verifier_key(&pks);
+
+        move || {
+            let _verifier = ctx.ctx.verifier(verifier_key.clone());
+        }
+    }
+
+    pub fn verify(domain_size: usize) -> impl Fn() {
+        let ctx = TestContext::new(domain_size);
+
+        let input = Input::new(b"hello").unwrap();
+        let output = ctx.sk.output(input);
+
+        let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
+
+        let prover_key = ctx.ctx.prover_key(&pks);
+        let prover = ctx.ctx.prover(prover_key, ctx.sk_idx);
+        let proof = ctx.sk.prove(input, output, b"foo", &prover);
+
+        let verifier_key = ctx.ctx.verifier_key(&pks);
+        let verifier = ctx.ctx.verifier(verifier_key);
+
+        move || {
+            let _result = Public::verify(input, output, b"foo", &proof, &verifier).unwrap();
+        }
+    }
+}
+
+mod bandersnatch_vrfs {
     use bandersnatch_vrfs::{ring::KZG, IntoVrfInput, Message, PublicKey, SecretKey, Transcript};
 
     struct TestContext {
@@ -34,29 +250,27 @@ mod bandersnatch {
         }
     }
 
-    pub fn make_prover_key(domain_size: u32) -> impl Fn() {
-        let ctx = TestContext::new(domain_size);
-
+    pub fn make_prover_key(domain_size: usize) -> impl Fn() {
+        let ctx = TestContext::new(domain_size as u32);
         let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
+
         move || {
-            // TODO: change to take a reference to `pks`.
-            // Internally change to take a reference to `pcs_params`
             let _prover_key = ctx.kzg.prover_key(pks.clone());
         }
     }
 
-    pub fn make_prover(domain_size: u32) -> impl Fn() {
-        let ctx = TestContext::new(domain_size);
-
+    pub fn make_prover(domain_size: usize) -> impl Fn() {
+        let ctx = TestContext::new(domain_size as u32);
         let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
+
         move || {
             let prover_key = ctx.kzg.prover_key(pks.clone());
             let _prover = ctx.kzg.init_ring_prover(prover_key, ctx.sk_idx);
         }
     }
 
-    pub fn prove(domain_size: u32) -> impl Fn() {
-        let ctx = TestContext::new(domain_size);
+    pub fn prove(domain_size: usize) -> impl Fn() {
+        let ctx = TestContext::new(domain_size as u32);
 
         let transcript = Transcript::new_labeled(b"label");
         let input = Message {
@@ -79,28 +293,27 @@ mod bandersnatch {
         }
     }
 
-    pub fn make_verifier_key(domain_size: u32) -> impl Fn() {
-        let ctx = TestContext::new(domain_size);
-
+    pub fn make_verifier_key(domain_size: usize) -> impl Fn() {
+        let ctx = TestContext::new(domain_size as u32);
         let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
+
         move || {
-            // TODO: change to take a reference to `pks`.
-            // Internally change to take a reference to `pcs_params`
             let _verifier_key = ctx.kzg.verifier_key(pks.clone());
         }
     }
 
-    pub fn make_verifier(domain_size: u32) -> impl Fn() {
-        let ctx = TestContext::new(domain_size);
+    pub fn make_verifier(domain_size: usize) -> impl Fn() {
+        let ctx = TestContext::new(domain_size as u32);
         let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
+        let verifier_key = ctx.kzg.verifier_key(pks.clone());
+
         move || {
-            let verifier_key = ctx.kzg.verifier_key(pks.clone());
-            let _verifier = ctx.kzg.init_ring_verifier(verifier_key);
+            let _verifier = ctx.kzg.init_ring_verifier(verifier_key.clone());
         }
     }
 
-    pub fn verify(domain_size: u32) -> impl Fn() {
-        let ctx = TestContext::new(domain_size);
+    pub fn verify(domain_size: usize) -> impl Fn() {
+        let ctx = TestContext::new(domain_size as u32);
 
         let transcript = Transcript::new_labeled(b"label");
         let input = Message {
@@ -133,86 +346,120 @@ mod bandersnatch {
 }
 
 fn vrfs(c: &mut Criterion) {
-    {
-        const DOMAIN_SIZE: u32 = 512;
-        let mut group = c.benchmark_group("bandersnatch-ring-vrf-512");
-        run_bench(
-            "make-prover-key",
-            &mut group,
-            bandersnatch::make_prover_key(DOMAIN_SIZE),
-        );
-        run_bench(
-            "make-prover",
-            &mut group,
-            bandersnatch::make_prover(DOMAIN_SIZE),
-        );
-        run_bench("sign", &mut group, bandersnatch::prove(DOMAIN_SIZE));
+    const DOMAIN_SIZE: usize = 2048;
 
+    {
+        let mut group = c.benchmark_group("make-prover-key");
         run_bench(
-            "make-verifier-key",
+            "bandersnatch-vrfs",
             &mut group,
-            bandersnatch::make_verifier_key(DOMAIN_SIZE),
+            bandersnatch_vrfs::make_prover_key(DOMAIN_SIZE),
         );
         run_bench(
-            "make-verifier",
+            "ark-ec-vrfs-bandersnatch-ed",
             &mut group,
-            bandersnatch::make_verifier(DOMAIN_SIZE),
+            ark_ec_vrfs_bandersnatch_ed::make_prover_key(DOMAIN_SIZE),
         );
-        run_bench("verify", &mut group, bandersnatch::verify(DOMAIN_SIZE));
+        run_bench(
+            "ark-ec-vrfs-bandersnatch-ws",
+            &mut group,
+            ark_ec_vrfs_bandersnatch_ws::make_prover_key(DOMAIN_SIZE),
+        );
     }
-    {
-        const DOMAIN_SIZE: u32 = 1024;
-        let mut group = c.benchmark_group("bandersnatch-ring-vrf-1024");
-        run_bench(
-            "make-prover-key",
-            &mut group,
-            bandersnatch::make_prover_key(DOMAIN_SIZE),
-        );
-        run_bench(
-            "make-prover",
-            &mut group,
-            bandersnatch::make_prover(DOMAIN_SIZE),
-        );
-        run_bench("sign", &mut group, bandersnatch::prove(DOMAIN_SIZE));
 
+    {
+        let mut group = c.benchmark_group("make-prover");
         run_bench(
-            "make-verifier-key",
+            "bandersnatch-vrfs",
             &mut group,
-            bandersnatch::make_verifier_key(DOMAIN_SIZE),
+            bandersnatch_vrfs::make_prover(DOMAIN_SIZE),
         );
         run_bench(
-            "make-verifier",
+            "ark-ec-vrfs-bandersnatch-ed",
             &mut group,
-            bandersnatch::make_verifier(DOMAIN_SIZE),
+            ark_ec_vrfs_bandersnatch_ed::make_prover(DOMAIN_SIZE),
         );
-        run_bench("verify", &mut group, bandersnatch::verify(DOMAIN_SIZE));
+        run_bench(
+            "ark-ec-vrfs-bandersnatch-ws",
+            &mut group,
+            ark_ec_vrfs_bandersnatch_ws::make_prover(DOMAIN_SIZE),
+        );
     }
-    {
-        const DOMAIN_SIZE: u32 = 2048;
-        let mut group = c.benchmark_group("bandersnatch-ring-vrf-2048");
-        run_bench(
-            "make-prover-key",
-            &mut group,
-            bandersnatch::make_prover_key(DOMAIN_SIZE),
-        );
-        run_bench(
-            "make-prover",
-            &mut group,
-            bandersnatch::make_prover(DOMAIN_SIZE),
-        );
-        run_bench("sign", &mut group, bandersnatch::prove(DOMAIN_SIZE));
 
+    {
+        let mut group = c.benchmark_group("prove");
         run_bench(
-            "make-verifier-key",
+            "bandersnatch-vrfs",
             &mut group,
-            bandersnatch::make_verifier_key(DOMAIN_SIZE),
+            bandersnatch_vrfs::prove(DOMAIN_SIZE),
         );
         run_bench(
-            "make-verifier",
+            "ark-ec-vrfs-bandersnatch-ed",
             &mut group,
-            bandersnatch::make_verifier(DOMAIN_SIZE),
+            ark_ec_vrfs_bandersnatch_ed::prove(DOMAIN_SIZE),
         );
-        run_bench("verify", &mut group, bandersnatch::verify(DOMAIN_SIZE));
+        run_bench(
+            "ark-ec-vrfs-bandersnatch-ws",
+            &mut group,
+            ark_ec_vrfs_bandersnatch_ws::prove(DOMAIN_SIZE),
+        );
+    }
+
+    {
+        let mut group = c.benchmark_group("make-verifier-key");
+        run_bench(
+            "bandersnatch-vrfs",
+            &mut group,
+            bandersnatch_vrfs::make_verifier_key(DOMAIN_SIZE),
+        );
+        run_bench(
+            "ark-ec-vrfs-bandersnatch-ed",
+            &mut group,
+            ark_ec_vrfs_bandersnatch_ed::make_verifier_key(DOMAIN_SIZE),
+        );
+        run_bench(
+            "ark-ec-vrfs-bandersnatch-ws",
+            &mut group,
+            ark_ec_vrfs_bandersnatch_ws::make_verifier_key(DOMAIN_SIZE),
+        );
+    }
+
+    {
+        let mut group = c.benchmark_group("make-verifier");
+        run_bench(
+            "bandersnatch-vrfs",
+            &mut group,
+            bandersnatch_vrfs::make_verifier(DOMAIN_SIZE),
+        );
+        run_bench(
+            "ark-ec-vrfs-bandersnatch-ed",
+            &mut group,
+            ark_ec_vrfs_bandersnatch_ed::make_verifier(DOMAIN_SIZE),
+        );
+        run_bench(
+            "ark-ec-vrfs-bandersnatch-ws",
+            &mut group,
+            ark_ec_vrfs_bandersnatch_ws::make_verifier(DOMAIN_SIZE),
+        );
+    }
+
+    {
+        let mut group = c.benchmark_group("verify");
+        run_bench(
+            "bandersnatch-vrfs",
+            &mut group,
+            bandersnatch_vrfs::verify(DOMAIN_SIZE),
+        );
+        run_bench(
+            "ark-ec-vrfs-bandersnatch-ed",
+            &mut group,
+            ark_ec_vrfs_bandersnatch_ed::verify(DOMAIN_SIZE),
+        );
+        run_bench(
+            "ark-ec-vrfs-bandersnatch-ws",
+            &mut group,
+            ark_ec_vrfs_bandersnatch_ws::verify(DOMAIN_SIZE),
+        );
     }
 }
 
