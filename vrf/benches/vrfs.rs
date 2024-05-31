@@ -274,7 +274,7 @@ fn vrfs(c: &mut Criterion) {
             ark_ec_vrf_bandersnatch_sha512_ed::verify(),
         );
         run_bench(
-            "ark-ec-vrf-bandersnatch-blake2b-ed",
+            "ark-ec-vrf-bandersnatch-blake2-ed",
             &mut group,
             ark_ec_vrf_bandersnatch_blake2_ed::verify(),
         );

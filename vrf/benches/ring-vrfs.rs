@@ -61,10 +61,10 @@ mod ark_ec_vrfs_bandersnatch_ed {
         let output = ctx.sk.output(input);
 
         let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
+        let prover_key = ctx.ctx.prover_key(&pks);
+        let prover = ctx.ctx.prover(prover_key, ctx.sk_idx);
 
         move || {
-            let prover_key = ctx.ctx.prover_key(&pks);
-            let prover = ctx.ctx.prover(prover_key, ctx.sk_idx);
             let _proof = ctx.sk.prove(input, output, b"foo", &prover);
         }
     }
@@ -169,10 +169,10 @@ mod ark_ec_vrfs_bandersnatch_ws {
         let output = ctx.sk.output(input);
 
         let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
+        let prover_key = ctx.ctx.prover_key(&pks);
+        let prover = ctx.ctx.prover(prover_key, ctx.sk_idx);
 
         move || {
-            let prover_key = ctx.ctx.prover_key(&pks);
-            let prover = ctx.ctx.prover(prover_key, ctx.sk_idx);
             let _proof = ctx.sk.prove(input, output, b"foo", &prover);
         }
     }
