@@ -15,13 +15,17 @@ command="your_command_here"
 old_ext=".html"
 new_ext=".md"
 
+rm -rf "./report"
+cp -r "$search_path" "./report"
+
 # Find all HTML files starting from the specified path and execute the command on each file
-find "$search_path" -type f -name "*.html" -print0 | while IFS= read -r -d '' file; do
+find "./report" -type f -name "*.html" -print0 | while IFS= read -r -d '' file; do
   echo "Processing: $file"
   base_name="${file%$old_ext}"
   new_file="${base_name}${new_ext}"
   html2md -i "$file" > "$new_file"
   sed -i 's/html/md/g' "$new_file"
+  rm "$file"
 done
 
 echo "Processing complete."
