@@ -21,6 +21,7 @@ find "$search_path" -type f -name "*.html" -print0 | while IFS= read -r -d '' fi
   base_name="${file%$old_ext}"
   new_file="${base_name}${new_ext}"
   html2md -i "$file" > "$new_file"
+  sed -i 's/html/md/g' "$new_file"
 done
 
 echo "Processing complete."
