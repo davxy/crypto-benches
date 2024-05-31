@@ -3,6 +3,20 @@
 See individual benchmark pages below for more details.
 
 
+- [k256-sign](../k256-sign/report/index.md)
+
+  - [libsecp256k1](../k256-sign/libsecp256k1/report/index.md)
+  - [rust-crypto](../k256-sign/rust-crypto/report/index.md)
+  - [secp256k1](../k256-sign/secp256k1/report/index.md)
+
+- [k256-verify](../k256-verify/report/index.md)
+
+  - [libsecp256k1](../k256-verify/libsecp256k1/report/index.md)
+  - [rust-crypto](../k256-verify/rust-crypto/report/index.md)
+  - [rust-crypto (rec)](../k256-verify/rust-crypto (rec)/report/index.md)
+  - [secp256k1](../k256-verify/secp256k1/report/index.md)
+  - [secp256k1 (rec)](../k256-verify/secp256k1 (rec)/report/index.md)
+
 - [prove](../prove/report/index.md)
   - [ark\_ec\_vrf\_ed25519](../prove/ark_ec_vrf_ed25519/report/index.md)
   - [schnorrkel](../prove/schnorrkel/report/index.md)
