@@ -1,2 +1,0 @@
-[plotting]
-gnuplot_command = "set terminal pngcairo transparent false"

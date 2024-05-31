@@ -16,4 +16,4 @@ Reported results were obtained on the following machine:
 * [VRF](vrf/README.md)
 * [Misc](misc/README.md)
 
-* [Full Report](report/report/index.md)
+* [Full Report](criterion/report/index.md)
