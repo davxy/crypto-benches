@@ -153,11 +153,12 @@ mod ark_ec_vrf_bandersnatch_blake2_ed {
     struct BandersnatchBlake2b512;
 
     impl Suite for BandersnatchBlake2b512 {
-        const SUITE_ID: u8 = 0x00;
+        const SUITE_ID: &'static [u8] = &[0x00];
         const CHALLENGE_LEN: usize = 32;
 
         type Affine = ark_ed_on_bls12_381_bandersnatch::SWAffine;
         type Hasher = blake2::Blake2b512;
+        type Codec = ark_ec_vrfs::codec::ArkworksCodec;
     }
 
     suite_types!(BandersnatchBlake2b512);

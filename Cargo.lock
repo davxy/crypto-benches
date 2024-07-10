@@ -109,7 +109,7 @@ dependencies = [
 [[package]]
 name = "ark-ec-vrfs"
 version = "0.1.0"
-source = "git+https://github.com/davxy/ark-ec-vrfs#0773854cbfc8c3501467e24e72add15d9f9c107c"
+source = "git+https://github.com/davxy/ark-ec-vrfs#5be98ccd6e255f72b99fb063e41d40dc65000031"
 dependencies = [
  "ark-bls12-381",
  "ark-ec",
@@ -126,7 +126,7 @@ dependencies = [
  "rand_chacha",
  "rand_core",
  "rayon",
- "ring 0.1.0",
+ "ring 0.1.0 (git+https://github.com/davxy/ring-proof?branch=extended)",
  "sha2 0.10.8",
  "zeroize",
 ]
@@ -354,7 +354,7 @@ dependencies = [
  "merlin",
  "rand_chacha",
  "rand_core",
- "ring 0.1.0",
+ "ring 0.1.0 (git+https://github.com/w3f/ring-proof)",
  "sha2 0.10.8",
  "zeroize",
 ]
@@ -655,6 +655,23 @@ name = "clap_lex"
 version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "98cc8fbded0c607b7ba9dd60cd98df59af97e84d24e49c8557331cfc26d301ce"
+
+[[package]]
+name = "common"
+version = "0.1.0"
+source = "git+https://github.com/davxy/ring-proof?branch=extended#f81008e966691029f84f4b6acd840084e9d918f5"
+dependencies = [
+ "ark-ec",
+ "ark-ff",
+ "ark-poly",
+ "ark-serialize",
+ "ark-std",
+ "fflonk",
+ "getrandom_or_panic",
+ "merlin",
+ "rand_chacha",
+ "rayon",
+]
 
 [[package]]
 name = "common"
@@ -1825,6 +1842,23 @@ dependencies = [
 [[package]]
 name = "ring"
 version = "0.1.0"
+source = "git+https://github.com/davxy/ring-proof?branch=extended#f81008e966691029f84f4b6acd840084e9d918f5"
+dependencies = [
+ "ark-ec",
+ "ark-ff",
+ "ark-poly",
+ "ark-serialize",
+ "ark-std",
+ "blake2",
+ "common 0.1.0 (git+https://github.com/davxy/ring-proof?branch=extended)",
+ "fflonk",
+ "merlin",
+ "rayon",
+]
+
+[[package]]
+name = "ring"
+version = "0.1.0"
 source = "git+https://github.com/w3f/ring-proof#b273d33f9981e2bb3375ab45faeb537f7ee35224"
 dependencies = [
  "ark-ec",
@@ -1833,7 +1867,7 @@ dependencies = [
  "ark-serialize",
  "ark-std",
  "blake2",
- "common",
+ "common 0.1.0 (git+https://github.com/w3f/ring-proof)",
  "fflonk",
  "merlin",
  "rayon",

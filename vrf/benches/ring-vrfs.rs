@@ -21,7 +21,7 @@ mod ark_ec_vrfs_bandersnatch_ed {
     impl TestContext {
         pub fn new(domain_size: usize) -> Self {
             let ctx = RingContext::from_seed(domain_size, [0; 32]);
-            let ring_size = ctx.keyset_max_size();
+            let ring_size = ctx.max_ring_size();
             let pks: Vec<_> = (0..ring_size)
                 .map(|i| secret_from_u32(i as u32).public())
                 .collect();
@@ -129,7 +129,7 @@ mod ark_ec_vrfs_bandersnatch_ws {
     impl TestContext {
         pub fn new(domain_size: usize) -> Self {
             let ctx = RingContext::from_seed(domain_size, [0; 32]);
-            let ring_size = ctx.keyset_max_size();
+            let ring_size = ctx.max_ring_size();
             let pks: Vec<_> = (0..ring_size)
                 .map(|i| secret_from_u32(i as u32).public())
                 .collect();
