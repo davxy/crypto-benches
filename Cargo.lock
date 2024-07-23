@@ -109,7 +109,7 @@ dependencies = [
 [[package]]
 name = "ark-ec-vrfs"
 version = "0.1.0"
-source = "git+https://github.com/davxy/ark-ec-vrfs#5be98ccd6e255f72b99fb063e41d40dc65000031"
+source = "git+https://github.com/davxy/ark-ec-vrfs?rev=c924bf6#c924bf660d9e548b60ccd0f9ebeaa0447f905e27"
 dependencies = [
  "ark-bls12-381",
  "ark-ec",
@@ -120,11 +120,8 @@ dependencies = [
  "ark-serialize",
  "ark-std",
  "digest 0.10.7",
- "fflonk",
  "hmac 0.12.1",
- "merlin",
  "rand_chacha",
- "rand_core",
  "rayon",
  "ring 0.1.0 (git+https://github.com/davxy/ring-proof?branch=extended)",
  "sha2 0.10.8",
@@ -659,7 +656,7 @@ checksum = "98cc8fbded0c607b7ba9dd60cd98df59af97e84d24e49c8557331cfc26d301ce"
 [[package]]
 name = "common"
 version = "0.1.0"
-source = "git+https://github.com/davxy/ring-proof?branch=extended#f81008e966691029f84f4b6acd840084e9d918f5"
+source = "git+https://github.com/davxy/ring-proof?branch=extended#6524d3a17b2ddadcfca2f2934d3aed7bb129fa9f"
 dependencies = [
  "ark-ec",
  "ark-ff",
@@ -1842,13 +1839,14 @@ dependencies = [
 [[package]]
 name = "ring"
 version = "0.1.0"
-source = "git+https://github.com/davxy/ring-proof?branch=extended#f81008e966691029f84f4b6acd840084e9d918f5"
+source = "git+https://github.com/davxy/ring-proof?branch=extended#6524d3a17b2ddadcfca2f2934d3aed7bb129fa9f"
 dependencies = [
  "ark-ec",
  "ark-ff",
  "ark-poly",
  "ark-serialize",
  "ark-std",
+ "arrayvec 0.7.4",
  "blake2",
  "common 0.1.0 (git+https://github.com/davxy/ring-proof?branch=extended)",
  "fflonk",

@@ -235,7 +235,7 @@ fn vrfs(c: &mut Criterion) {
         let mut group = c.benchmark_group("prove");
         run_bench("schnorrkel", &mut group, schnorrkel::prove());
         run_bench(
-            "ark_ec_vrf_ed25519",
+            "ark-ec-vrf-ed25519",
             &mut group,
             ark_ec_vrf_ed25519::prove(),
         );
@@ -260,17 +260,17 @@ fn vrfs(c: &mut Criterion) {
         let mut group = c.benchmark_group("verify");
         run_bench("schnorrkel", &mut group, schnorrkel::verify());
         run_bench(
-            "ark_ec_vrf_ed25519",
+            "ark-ec-vrf-ed25519",
             &mut group,
             ark_ec_vrf_ed25519::verify(),
         );
         run_bench(
-            "ark-ec-vrf_bandersnatch-sha512-ws",
+            "ark-ec-vrf-bandersnatch-sha512-ws",
             &mut group,
             ark_ec_vrf_bandersnatch_sha512_ws::verify(),
         );
         run_bench(
-            "ark-ec-vrf_bandersnatch-sha512-ed",
+            "ark-ec-vrf-bandersnatch-sha512-ed",
             &mut group,
             ark_ec_vrf_bandersnatch_sha512_ed::verify(),
         );
