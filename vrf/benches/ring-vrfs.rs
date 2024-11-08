@@ -353,7 +353,7 @@ mod bandersnatch_vrfs {
 }
 
 fn vrfs(c: &mut Criterion) {
-    const RING_SIZE: usize = 1791;
+    const RING_SIZE: usize = 1023;
 
     {
         let mut group = c.benchmark_group("make-prover-key");

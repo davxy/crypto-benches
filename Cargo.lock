@@ -109,7 +109,7 @@ dependencies = [
 [[package]]
 name = "ark-ec-vrfs"
 version = "0.1.0"
-source = "git+https://github.com/davxy/ark-ec-vrfs?rev=c924bf6#c924bf660d9e548b60ccd0f9ebeaa0447f905e27"
+source = "git+https://github.com/davxy/ark-ec-vrfs?rev=f6e80d3#f6e80d3f2ecf06e9e07c0b16150d5814c942f4f6"
 dependencies = [
  "ark-bls12-381",
  "ark-ec",
@@ -123,7 +123,7 @@ dependencies = [
  "hmac 0.12.1",
  "rand_chacha",
  "rayon",
- "ring 0.1.0 (git+https://github.com/davxy/ring-proof?branch=extended)",
+ "ring 0.1.0 (git+https://github.com/davxy/ring-proof?rev=149fa4b)",
  "sha2 0.10.8",
  "zeroize",
 ]
@@ -244,7 +244,7 @@ dependencies = [
  "ark-ff",
  "ark-serialize",
  "ark-std",
- "ark-transcript",
+ "ark-transcript 0.0.2 (git+https://github.com/davxy/ring-vrf?branch=pending-approval)",
  "digest 0.10.7",
  "getrandom_or_panic",
  "zeroize",
@@ -282,6 +282,20 @@ dependencies = [
  "num-traits",
  "rand",
  "rayon",
+]
+
+[[package]]
+name = "ark-transcript"
+version = "0.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "563084372d89271122bd743ef0a608179726f5fad0566008ba55bd0f756489b8"
+dependencies = [
+ "ark-ff",
+ "ark-serialize",
+ "ark-std",
+ "digest 0.10.7",
+ "rand_core",
+ "sha3",
 ]
 
 [[package]]
@@ -656,7 +670,7 @@ checksum = "98cc8fbded0c607b7ba9dd60cd98df59af97e84d24e49c8557331cfc26d301ce"
 [[package]]
 name = "common"
 version = "0.1.0"
-source = "git+https://github.com/davxy/ring-proof?branch=extended#6524d3a17b2ddadcfca2f2934d3aed7bb129fa9f"
+source = "git+https://github.com/davxy/ring-proof?rev=149fa4b#149fa4b3d231c949d8f637d1afd45c3bd4a04486"
 dependencies = [
  "ark-ec",
  "ark-ff",
@@ -665,8 +679,6 @@ dependencies = [
  "ark-std",
  "fflonk",
  "getrandom_or_panic",
- "merlin",
- "rand_chacha",
  "rayon",
 ]
 
@@ -936,7 +948,7 @@ dependencies = [
  "ark-secret-scalar",
  "ark-serialize",
  "ark-std",
- "ark-transcript",
+ "ark-transcript 0.0.2 (git+https://github.com/davxy/ring-vrf?branch=pending-approval)",
  "arrayvec 0.7.4",
  "zeroize",
 ]
@@ -1839,18 +1851,17 @@ dependencies = [
 [[package]]
 name = "ring"
 version = "0.1.0"
-source = "git+https://github.com/davxy/ring-proof?branch=extended#6524d3a17b2ddadcfca2f2934d3aed7bb129fa9f"
+source = "git+https://github.com/davxy/ring-proof?rev=149fa4b#149fa4b3d231c949d8f637d1afd45c3bd4a04486"
 dependencies = [
  "ark-ec",
  "ark-ff",
  "ark-poly",
  "ark-serialize",
  "ark-std",
+ "ark-transcript 0.0.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "arrayvec 0.7.4",
- "blake2",
- "common 0.1.0 (git+https://github.com/davxy/ring-proof?branch=extended)",
+ "common 0.1.0 (git+https://github.com/davxy/ring-proof?rev=149fa4b)",
  "fflonk",
- "merlin",
  "rayon",
 ]
 
