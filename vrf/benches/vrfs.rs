@@ -194,7 +194,7 @@ mod ark_ec_vrf_bandersnatch_blake2_ed {
     }
 }
 
-mod bandersnatch_vrfs {
+mod w3f_bandersnatch_vrfs {
     use bandersnatch_vrfs::{IntoVrfInput, Message, SecretKey, ThinVrfSignature, Transcript};
 
     pub fn prove() -> impl Fn() {
@@ -254,7 +254,11 @@ fn vrfs(c: &mut Criterion) {
             &mut group,
             ark_ec_vrf_bandersnatch_blake2_ed::prove(),
         );
-        run_bench("bandersnatch-vrfs", &mut group, bandersnatch_vrfs::prove());
+        run_bench(
+            "w3f-bandersnatch-vrfs",
+            &mut group,
+            w3f_bandersnatch_vrfs::prove(),
+        );
     }
     {
         let mut group = c.benchmark_group("verify");
@@ -279,7 +283,11 @@ fn vrfs(c: &mut Criterion) {
             &mut group,
             ark_ec_vrf_bandersnatch_blake2_ed::verify(),
         );
-        run_bench("bandersnatch-vrfs", &mut group, bandersnatch_vrfs::verify());
+        run_bench(
+            "w3f-bandersnatch-vrfs",
+            &mut group,
+            w3f_bandersnatch_vrfs::verify(),
+        );
     }
 }
 
