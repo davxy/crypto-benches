@@ -149,7 +149,7 @@ dependencies = [
 [[package]]
 name = "ark-ec-vrfs"
 version = "0.1.0"
-source = "git+https://github.com/davxy/ark-ec-vrfs?rev=979702d#979702d7e96aea2bff02593dd20663b1c9a4740e"
+source = "git+https://github.com/davxy/ark-ec-vrfs#c68f9ca071dfacd8c393c2a894c11e9515cc7719"
 dependencies = [
  "ark-bls12-381 0.5.0",
  "ark-ec 0.5.0",
@@ -2531,8 +2531,8 @@ dependencies = [
 
 [[package]]
 name = "w3f-plonk-common"
-version = "0.0.1"
-source = "git+https://github.com/davxy/ring-proof?rev=8b2cab8#8b2cab8784ad75c735a86291b9b6c58a3062e6fa"
+version = "0.0.2"
+source = "git+https://github.com/davxy/ring-proof?rev=691cf0a#691cf0a5ce15ebf5d31a9a0077e38fd2e73a99bd"
 dependencies = [
  "ark-ec 0.5.0",
  "ark-ff 0.5.0",
@@ -2547,8 +2547,8 @@ dependencies = [
 
 [[package]]
 name = "w3f-ring-proof"
-version = "0.0.1"
-source = "git+https://github.com/davxy/ring-proof?rev=8b2cab8#8b2cab8784ad75c735a86291b9b6c58a3062e6fa"
+version = "0.0.2"
+source = "git+https://github.com/davxy/ring-proof?rev=691cf0a#691cf0a5ce15ebf5d31a9a0077e38fd2e73a99bd"
 dependencies = [
  "ark-ec 0.5.0",
  "ark-ff 0.5.0",
