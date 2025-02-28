@@ -96,6 +96,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "ark-bn254"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d69eab57e8d2663efa5c63135b2af4f396d66424f88954c21104125ab6b3e6bc"
+dependencies = [
+ "ark-ec 0.5.0",
+ "ark-ff 0.5.0",
+ "ark-std 0.5.0",
+]
+
+[[package]]
 name = "ark-curve25519"
 version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -148,12 +159,16 @@ dependencies = [
 
 [[package]]
 name = "ark-ec-vrfs"
-version = "0.1.0"
-source = "git+https://github.com/davxy/ark-ec-vrfs#c68f9ca071dfacd8c393c2a894c11e9515cc7719"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2f5f2414d02d20c44288aae80c512e410ab660ff6829a721ab0cb28f8aca2d55"
 dependencies = [
  "ark-bls12-381 0.5.0",
+ "ark-bn254",
  "ark-ec 0.5.0",
+ "ark-ed-on-bls12-381",
  "ark-ed-on-bls12-381-bandersnatch 0.5.0",
+ "ark-ed-on-bn254",
  "ark-ed25519",
  "ark-ff 0.5.0",
  "ark-secp256r1",
@@ -166,6 +181,18 @@ dependencies = [
  "sha2 0.10.8",
  "w3f-ring-proof",
  "zeroize",
+]
+
+[[package]]
+name = "ark-ed-on-bls12-381"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ba93ca6e75e5f589c139e5a41ebd783ebf2153de0025cd2b00da2963929c92ec"
+dependencies = [
+ "ark-bls12-381 0.5.0",
+ "ark-ec 0.5.0",
+ "ark-ff 0.5.0",
+ "ark-std 0.5.0",
 ]
 
 [[package]]
@@ -187,6 +214,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1786b2e3832f6f0f7c8d62d5d5a282f6952a1ab99981c54cd52b6ac1d8f02df5"
 dependencies = [
  "ark-bls12-381 0.5.0",
+ "ark-ec 0.5.0",
+ "ark-ff 0.5.0",
+ "ark-std 0.5.0",
+]
+
+[[package]]
+name = "ark-ed-on-bn254"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "962e24e25cbdcaabe619c281a62bccc885f778b188129d6a02875c2671666219"
+dependencies = [
+ "ark-bn254",
  "ark-ec 0.5.0",
  "ark-ff 0.5.0",
  "ark-std 0.5.0",
@@ -2532,7 +2571,8 @@ dependencies = [
 [[package]]
 name = "w3f-plonk-common"
 version = "0.0.2"
-source = "git+https://github.com/davxy/ring-proof?rev=691cf0a#691cf0a5ce15ebf5d31a9a0077e38fd2e73a99bd"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1aca389e494fe08c5c108b512e2328309036ee1c0bc7bdfdb743fef54d448c8c"
 dependencies = [
  "ark-ec 0.5.0",
  "ark-ff 0.5.0",
@@ -2548,7 +2588,8 @@ dependencies = [
 [[package]]
 name = "w3f-ring-proof"
 version = "0.0.2"
-source = "git+https://github.com/davxy/ring-proof?rev=691cf0a#691cf0a5ce15ebf5d31a9a0077e38fd2e73a99bd"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8a639379402ad51504575dbd258740383291ac8147d3b15859bdf1ea48c677de"
 dependencies = [
  "ark-ec 0.5.0",
  "ark-ff 0.5.0",
