@@ -1,4 +1,4 @@
-mod schnorrkel {
+mod w3f_schnorrkel {
     use merlin::Transcript;
     use rand::rngs::OsRng;
     use schnorrkel::Keypair;
@@ -27,7 +27,7 @@ mod schnorrkel {
     }
 }
 
-mod bandersnatch {
+mod w3f_bandersnatch {
     use bandersnatch_vrfs::{IntoVrfInput, Message, SecretKey, ThinVrfSignature, Transcript};
 
     #[test]

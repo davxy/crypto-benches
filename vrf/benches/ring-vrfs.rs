@@ -217,7 +217,7 @@ mod ark_ec_vrfs_bandersnatch_ws {
     }
 }
 
-mod bandersnatch_vrfs {
+mod w3f_bandersnatch_vrfs {
     use bandersnatch_vrfs::{ring::KZG, IntoVrfInput, Message, PublicKey, SecretKey, Transcript};
 
     // Domain size from ring size
@@ -358,9 +358,9 @@ fn vrfs(c: &mut Criterion) {
     {
         let mut group = c.benchmark_group("make-prover-key");
         run_bench(
-            "bandersnatch-vrfs",
+            "w3f_bandersnatch-vrfs",
             &mut group,
-            bandersnatch_vrfs::make_prover_key(RING_SIZE),
+            w3f_bandersnatch_vrfs::make_prover_key(RING_SIZE),
         );
         run_bench(
             "ark-ec-vrfs-bandersnatch-ed",
@@ -377,9 +377,9 @@ fn vrfs(c: &mut Criterion) {
     {
         let mut group = c.benchmark_group("make-prover");
         run_bench(
-            "bandersnatch-vrfs",
+            "w3f-bandersnatch-vrfs",
             &mut group,
-            bandersnatch_vrfs::make_prover(RING_SIZE),
+            w3f_bandersnatch_vrfs::make_prover(RING_SIZE),
         );
         run_bench(
             "ark-ec-vrfs-bandersnatch-ed",
@@ -396,9 +396,9 @@ fn vrfs(c: &mut Criterion) {
     {
         let mut group = c.benchmark_group("prove");
         run_bench(
-            "bandersnatch-vrfs",
+            "w3f-bandersnatch-vrfs",
             &mut group,
-            bandersnatch_vrfs::prove(RING_SIZE),
+            w3f_bandersnatch_vrfs::prove(RING_SIZE),
         );
         run_bench(
             "ark-ec-vrfs-bandersnatch-ed",
@@ -415,9 +415,9 @@ fn vrfs(c: &mut Criterion) {
     {
         let mut group = c.benchmark_group("make-verifier-key");
         run_bench(
-            "bandersnatch-vrfs",
+            "w3f-bandersnatch-vrfs",
             &mut group,
-            bandersnatch_vrfs::make_verifier_key(RING_SIZE),
+            w3f_bandersnatch_vrfs::make_verifier_key(RING_SIZE),
         );
         run_bench(
             "ark-ec-vrfs-bandersnatch-ed",
@@ -434,9 +434,9 @@ fn vrfs(c: &mut Criterion) {
     {
         let mut group = c.benchmark_group("make-verifier");
         run_bench(
-            "bandersnatch-vrfs",
+            "w3f-bandersnatch-vrfs",
             &mut group,
-            bandersnatch_vrfs::make_verifier(RING_SIZE),
+            w3f_bandersnatch_vrfs::make_verifier(RING_SIZE),
         );
         run_bench(
             "ark-ec-vrfs-bandersnatch-ed",
@@ -453,9 +453,9 @@ fn vrfs(c: &mut Criterion) {
     {
         let mut group = c.benchmark_group("verify");
         run_bench(
-            "bandersnatch-vrfs",
+            "w3f-bandersnatch-vrfs",
             &mut group,
-            bandersnatch_vrfs::verify(RING_SIZE),
+            w3f_bandersnatch_vrfs::verify(RING_SIZE),
         );
         run_bench(
             "ark-ec-vrfs-bandersnatch-ed",
