@@ -10,9 +10,3 @@ members = [
     "hash",
     "vrf",
 ]
-
-# [patch."http://github.com/davxy/ark-ec-vrfs"]
-# ark-ec-vrfs = { path = "/home/davxy/develop/personal/ark-ec-vrfs" }
-
-# [patch."https://github.com/davxy/ring-proof"]
-# ring = { path = "/mnt/ssd/develop/w3f/ring-proof/ring" }

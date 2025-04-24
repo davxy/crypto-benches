@@ -29,11 +29,11 @@ mod schnorrkel {
 }
 
 mod ark_ec_vrf_ed25519 {
-    use ark_ec_vrfs::{
+    use ark_std::UniformRand;
+    use ark_vrf::{
         ietf::{Prover, Verifier},
         suites::ed25519::*,
     };
-    use ark_std::UniformRand;
 
     const SEED: &[u8] = b"test";
 
@@ -67,11 +67,11 @@ mod ark_ec_vrf_ed25519 {
 }
 
 mod ark_ec_vrf_bandersnatch_sha512_ws {
-    use ark_ec_vrfs::{
-        ietf::{Prover, Verifier},
-        suites::bandersnatch::weierstrass::*,
-    };
     use ark_std::UniformRand;
+    use ark_vrf::{
+        ietf::{Prover, Verifier},
+        suites::bandersnatch_sw::*,
+    };
 
     const SEED: &[u8] = b"test";
 
@@ -105,11 +105,11 @@ mod ark_ec_vrf_bandersnatch_sha512_ws {
 }
 
 mod ark_ec_vrf_bandersnatch_sha512_ed {
-    use ark_ec_vrfs::{
-        ietf::{Prover, Verifier},
-        suites::bandersnatch::edwards::*,
-    };
     use ark_std::UniformRand;
+    use ark_vrf::{
+        ietf::{Prover, Verifier},
+        suites::bandersnatch::*,
+    };
 
     const SEED: &[u8] = b"test";
 
@@ -143,11 +143,11 @@ mod ark_ec_vrf_bandersnatch_sha512_ed {
 }
 
 mod ark_ec_vrf_bandersnatch_blake2_ed {
-    use ark_ec_vrfs::{
+    use ark_std::UniformRand;
+    use ark_vrf::{
         ietf::{Prover, Verifier},
         suite_types, Suite,
     };
-    use ark_std::UniformRand;
 
     #[derive(Debug, Clone, Copy)]
     struct BandersnatchBlake2b512;
@@ -158,7 +158,7 @@ mod ark_ec_vrf_bandersnatch_blake2_ed {
 
         type Affine = ark_ed_on_bls12_381_bandersnatch::SWAffine;
         type Hasher = blake2::Blake2b512;
-        type Codec = ark_ec_vrfs::codec::ArkworksCodec;
+        type Codec = ark_vrf::codec::ArkworksCodec;
     }
 
     suite_types!(BandersnatchBlake2b512);
@@ -194,42 +194,6 @@ mod ark_ec_vrf_bandersnatch_blake2_ed {
     }
 }
 
-mod w3f_bandersnatch_vrfs {
-    use bandersnatch_vrfs::{IntoVrfInput, Message, SecretKey, ThinVrfSignature, Transcript};
-
-    pub fn prove() -> impl Fn() {
-        let secret = SecretKey::ephemeral();
-        let transcript = Transcript::new_labeled(b"label");
-        let input = Message {
-            domain: b"domain",
-            message: b"message",
-        }
-        .into_vrf_input();
-        let io = secret.vrf_inout(input);
-
-        move || {
-            let _proof: ThinVrfSignature<1> = secret.sign_thin_vrf(transcript.clone(), &[io]);
-        }
-    }
-
-    pub fn verify() -> impl Fn() {
-        let secret = SecretKey::ephemeral();
-        let public = secret.to_public();
-        let transcript = Transcript::new_labeled(b"label");
-        let input = Message {
-            domain: b"domain",
-            message: b"message",
-        }
-        .into_vrf_input();
-        let io = secret.vrf_inout(input);
-        let proof: ThinVrfSignature<1> = secret.sign_thin_vrf(transcript.clone(), &[io]);
-
-        move || {
-            let _res = public.verify_thin_vrf(transcript.clone(), core::iter::once(input), &proof);
-        }
-    }
-}
-
 fn vrfs(c: &mut Criterion) {
     {
         let mut group = c.benchmark_group("prove");
@@ -254,11 +218,6 @@ fn vrfs(c: &mut Criterion) {
             &mut group,
             ark_ec_vrf_bandersnatch_blake2_ed::prove(),
         );
-        run_bench(
-            "w3f-bandersnatch-vrfs",
-            &mut group,
-            w3f_bandersnatch_vrfs::prove(),
-        );
     }
     {
         let mut group = c.benchmark_group("verify");
@@ -282,11 +241,6 @@ fn vrfs(c: &mut Criterion) {
             "ark-ec-vrf-bandersnatch-blake2-ed",
             &mut group,
             ark_ec_vrf_bandersnatch_blake2_ed::verify(),
-        );
-        run_bench(
-            "w3f-bandersnatch-vrfs",
-            &mut group,
-            w3f_bandersnatch_vrfs::verify(),
         );
     }
 }

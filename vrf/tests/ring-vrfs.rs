@@ -1,29 +1,33 @@
-mod bandersnatch_ring_vrf {
-    use bandersnatch_vrfs::{ring::KZG, IntoVrfInput, Message, PublicKey, SecretKey, Transcript};
+mod ark_ec_ring_vrf {
+    use ark_vrf::{
+        ring::{Prover, Verifier},
+        suites::bandersnatch::{Input, Public, RingProofParams, Secret},
+    };
+
+    const RING_SIZE: usize = 100;
 
     struct TestContext {
-        kzg: KZG,
-        pks: Vec<PublicKey>,
-        sk: SecretKey,
+        params: RingProofParams,
+        pks: Vec<Public>,
+        sk: Secret,
         sk_idx: usize,
     }
 
-    fn secret_from_u32(value: u32) -> SecretKey {
+    fn secret_from_u32(value: u32) -> Secret {
         let mut seed = [0; 32];
         seed[0..4].copy_from_slice(&value.to_le_bytes());
-        SecretKey::from_seed(&seed)
+        Secret::from_seed(&seed)
     }
 
     impl TestContext {
-        pub fn new(domain_size: u32) -> Self {
-            let kzg = KZG::testing_kzg_setup([0; 32], domain_size);
-            let ring_size = kzg.max_keyset_size();
-            let pks: Vec<_> = (0..ring_size)
-                .map(|i| secret_from_u32(i as u32).to_public())
+        pub fn new() -> Self {
+            let params = RingProofParams::from_seed(RING_SIZE, [0; 32]);
+            let pks: Vec<_> = (0..RING_SIZE)
+                .map(|i| secret_from_u32(i as u32).public())
                 .collect();
             let sk = secret_from_u32(3);
             Self {
-                kzg,
+                params,
                 pks,
                 sk,
                 sk_idx: 3,
@@ -31,26 +35,28 @@ mod bandersnatch_ring_vrf {
         }
     }
 
+    fn vrf_input_point(data: &[u8]) -> Input {
+        Input::new(data).unwrap()
+    }
+
     #[test]
-    fn sign() {
-        let ctx = TestContext::new(1024);
+    fn sign_verify() {
+        let ctx = TestContext::new();
 
-        let transcript = Transcript::new_labeled(b"label");
-        let input = Message {
-            domain: b"domain",
-            message: b"message",
-        }
-        .into_vrf_input();
-        let inout = ctx.sk.vrf_inout(input);
+        let input = vrf_input_point(b"foo");
+        let output = ctx.sk.output(input);
 
-        let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
-        let prover_key = ctx.kzg.prover_key(pks.clone());
-        let prover = ctx.kzg.init_ring_prover(prover_key, ctx.sk_idx);
+        // Backend currently requires the wrapped type (plain affine points)
+        let pts: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
 
-        let prover_wrap = bandersnatch_vrfs::RingProver {
-            ring_prover: &prover,
-            secret: &ctx.sk,
-        };
-        let _sig = prover_wrap.sign_ring_vrf(transcript.clone(), &[inout]);
+        // Proof construction
+        let prover_key = ctx.params.prover_key(&pts);
+        let prover = ctx.params.prover(prover_key, ctx.sk_idx);
+        let proof = ctx.sk.prove(input, output, b"aux", &prover);
+
+        let verifier_key = ctx.params.verifier_key(&pts);
+        let verifier = ctx.params.verifier(verifier_key);
+
+        assert!(Public::verify(input, output, b"aux", &proof, &verifier).is_ok());
     }
 }

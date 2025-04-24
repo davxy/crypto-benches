@@ -158,32 +158,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ark-ec-vrfs"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2f5f2414d02d20c44288aae80c512e410ab660ff6829a721ab0cb28f8aca2d55"
-dependencies = [
- "ark-bls12-381 0.5.0",
- "ark-bn254",
- "ark-ec 0.5.0",
- "ark-ed-on-bls12-381",
- "ark-ed-on-bls12-381-bandersnatch 0.5.0",
- "ark-ed-on-bn254",
- "ark-ed25519",
- "ark-ff 0.5.0",
- "ark-secp256r1",
- "ark-serialize 0.5.0",
- "ark-std 0.5.0",
- "digest 0.10.7",
- "hmac 0.12.1",
- "rand_chacha",
- "rayon",
- "sha2 0.10.8",
- "w3f-ring-proof",
- "zeroize",
-]
-
-[[package]]
 name = "ark-ed-on-bls12-381"
 version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -342,7 +316,6 @@ dependencies = [
  "ark-std 0.4.0",
  "derivative",
  "hashbrown 0.13.2",
- "rayon",
 ]
 
 [[package]]
@@ -362,20 +335,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ark-scale"
-version = "0.0.12"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5f69c00b3b529be29528a6f2fd5fa7b1790f8bed81b9cdca17e326538545a179"
-dependencies = [
- "ark-ec 0.4.2",
- "ark-ff 0.4.2",
- "ark-serialize 0.4.2",
- "ark-std 0.4.0",
- "parity-scale-codec",
- "scale-info",
-]
-
-[[package]]
 name = "ark-secp256r1"
 version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -384,21 +343,6 @@ dependencies = [
  "ark-ec 0.5.0",
  "ark-ff 0.5.0",
  "ark-std 0.5.0",
-]
-
-[[package]]
-name = "ark-secret-scalar"
-version = "0.0.3"
-source = "git+https://github.com/davxy/ring-vrf?branch=pending-approval#1a7aa560976227ab9b559efc05e6be36ba37d20f"
-dependencies = [
- "ark-ec 0.4.2",
- "ark-ff 0.4.2",
- "ark-serialize 0.4.2",
- "ark-std 0.4.0",
- "ark-transcript 0.0.2",
- "digest 0.10.7",
- "getrandom_or_panic",
- "zeroize",
 ]
 
 [[package]]
@@ -473,19 +417,6 @@ dependencies = [
 
 [[package]]
 name = "ark-transcript"
-version = "0.0.2"
-source = "git+https://github.com/davxy/ring-vrf?branch=pending-approval#1a7aa560976227ab9b559efc05e6be36ba37d20f"
-dependencies = [
- "ark-ff 0.4.2",
- "ark-serialize 0.4.2",
- "ark-std 0.4.0",
- "digest 0.10.7",
- "rand_core",
- "sha3",
-]
-
-[[package]]
-name = "ark-transcript"
 version = "0.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "47c1c928edb9d8ff24cb5dcb7651d3a98494fff3099eee95c2404cd813a9139f"
@@ -496,6 +427,32 @@ dependencies = [
  "digest 0.10.7",
  "rand_core",
  "sha3",
+]
+
+[[package]]
+name = "ark-vrf"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9501da18569b2afe0eb934fb7afd5a247d238b94116155af4dd068f319adfe6d"
+dependencies = [
+ "ark-bls12-381 0.5.0",
+ "ark-bn254",
+ "ark-ec 0.5.0",
+ "ark-ed-on-bls12-381",
+ "ark-ed-on-bls12-381-bandersnatch 0.5.0",
+ "ark-ed-on-bn254",
+ "ark-ed25519",
+ "ark-ff 0.5.0",
+ "ark-secp256r1",
+ "ark-serialize 0.5.0",
+ "ark-std 0.5.0",
+ "digest 0.10.7",
+ "hmac 0.12.1",
+ "rand_chacha",
+ "rayon",
+ "sha2 0.10.8",
+ "w3f-ring-proof",
+ "zeroize",
 ]
 
 [[package]]
@@ -535,27 +492,6 @@ name = "autocfg"
 version = "1.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0c4b4d0bd25bd0b74681c0ad21497610ce1b7c91b1022cd21c80c6fbdd9476b0"
-
-[[package]]
-name = "bandersnatch_vrfs"
-version = "0.0.4"
-source = "git+https://github.com/davxy/ring-vrf?branch=pending-approval#1a7aa560976227ab9b559efc05e6be36ba37d20f"
-dependencies = [
- "ark-bls12-381 0.4.0",
- "ark-ec 0.4.2",
- "ark-ed-on-bls12-381-bandersnatch 0.4.0",
- "ark-ff 0.4.2",
- "ark-serialize 0.4.2",
- "ark-std 0.4.0",
- "dleq_vrf",
- "fflonk",
- "merlin",
- "rand_chacha",
- "rand_core",
- "ring 0.1.0",
- "sha2 0.10.8",
- "zeroize",
-]
 
 [[package]]
 name = "base16ct"
@@ -855,23 +791,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "98cc8fbded0c607b7ba9dd60cd98df59af97e84d24e49c8557331cfc26d301ce"
 
 [[package]]
-name = "common"
-version = "0.1.0"
-source = "git+https://github.com/w3f/ring-proof#b273d33f9981e2bb3375ab45faeb537f7ee35224"
-dependencies = [
- "ark-ec 0.4.2",
- "ark-ff 0.4.2",
- "ark-poly 0.4.2",
- "ark-serialize 0.4.2",
- "ark-std 0.4.0",
- "fflonk",
- "getrandom_or_panic",
- "merlin",
- "rand_chacha",
- "rayon",
-]
-
-[[package]]
 name = "const-oid"
 version = "0.9.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1069,17 +988,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "derive_more"
-version = "0.99.17"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4fb810d30a7c1953f91334de7244731fc3f3c10d7fe163338a35b9f640960321"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 1.0.109",
-]
-
-[[package]]
 name = "des"
 version = "0.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1107,22 +1015,6 @@ dependencies = [
  "const-oid",
  "crypto-common",
  "subtle",
-]
-
-[[package]]
-name = "dleq_vrf"
-version = "0.0.3"
-source = "git+https://github.com/davxy/ring-vrf?branch=pending-approval#1a7aa560976227ab9b559efc05e6be36ba37d20f"
-dependencies = [
- "ark-ec 0.4.2",
- "ark-ff 0.4.2",
- "ark-scale",
- "ark-secret-scalar",
- "ark-serialize 0.4.2",
- "ark-std 0.4.0",
- "ark-transcript 0.0.2",
- "arrayvec 0.7.4",
- "zeroize",
 ]
 
 [[package]]
@@ -1250,19 +1142,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "fflonk"
-version = "0.1.0"
-source = "git+https://github.com/w3f/fflonk#1e854f35e9a65d08b11a86291405cdc95baa0a35"
-dependencies = [
- "ark-ec 0.4.2",
- "ark-ff 0.4.2",
- "ark-poly 0.4.2",
- "ark-serialize 0.4.2",
- "ark-std 0.4.0",
- "merlin",
-]
-
-[[package]]
 name = "fiat-crypto"
 version = "0.2.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1360,7 +1239,7 @@ dependencies = [
  "blake3",
  "criterion",
  "cry-rs",
- "ring 0.17.8",
+ "ring",
  "sha2 0.10.8",
  "utils",
 ]
@@ -2077,23 +1956,6 @@ dependencies = [
 
 [[package]]
 name = "ring"
-version = "0.1.0"
-source = "git+https://github.com/w3f/ring-proof#b273d33f9981e2bb3375ab45faeb537f7ee35224"
-dependencies = [
- "ark-ec 0.4.2",
- "ark-ff 0.4.2",
- "ark-poly 0.4.2",
- "ark-serialize 0.4.2",
- "ark-std 0.4.0",
- "blake2",
- "common",
- "fflonk",
- "merlin",
- "rayon",
-]
-
-[[package]]
-name = "ring"
 version = "0.17.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c17fa4cb658e3583423e915b9f3acc01cceaee1860e33d59ebae66adc3a2dc0d"
@@ -2184,17 +2046,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "93fc1dc3aaa9bfed95e02e6eadabb4baf7e3078b0bd1b4d7b6b0b68378900502"
 dependencies = [
  "winapi-util",
-]
-
-[[package]]
-name = "scale-info"
-version = "2.11.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "eca070c12893629e2cc820a9761bedf6ce1dcddc9852984d1dc734b8bd9bd024"
-dependencies = [
- "cfg-if",
- "derive_more",
- "parity-scale-codec",
 ]
 
 [[package]]
@@ -2541,10 +2392,9 @@ checksum = "49874b5167b65d7193b8aba1567f5c7d93d001cafc34600cee003eda787e483f"
 name = "vrf"
 version = "0.1.0"
 dependencies = [
- "ark-ec-vrfs",
  "ark-ed-on-bls12-381-bandersnatch 0.5.0",
  "ark-std 0.5.0",
- "bandersnatch_vrfs",
+ "ark-vrf",
  "blake2",
  "criterion",
  "merlin",
@@ -2596,7 +2446,7 @@ dependencies = [
  "ark-poly 0.5.0",
  "ark-serialize 0.5.0",
  "ark-std 0.5.0",
- "ark-transcript 0.0.3",
+ "ark-transcript",
  "rayon",
  "w3f-pcs",
  "w3f-plonk-common",
