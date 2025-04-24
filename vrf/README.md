@@ -9,22 +9,21 @@ Comparison between:
 
 ```
 prove/schnorrkel                           time:   [101.11 µs 101.15 µs 101.21 µs]
-prove/ark-ec-vrf-ed25519                   time:   [175.70 µs 175.82 µs 175.96 µs]
-prove/ark-ec-vrf-bandersnatch-sha512-ed    time:   [187.79 µs 187.89 µs 187.98 µs]
-prove/ark-ec-vrf-bandersnatch-blake2-ed    time:   [225.30 µs 225.39 µs 225.49 µs]
-prove/ark-ec-vrf-bandersnatch-sha512-ws    time:   [230.34 µs 230.46 µs 230.58 µs]
+prove/ark-vrf-ed25519                      time:   [175.70 µs 175.82 µs 175.96 µs]
+prove/ark-vrf-bandersnatch-sha512-ed       time:   [187.79 µs 187.89 µs 187.98 µs]
+prove/ark-vrf-bandersnatch-blake2-ed       time:   [225.30 µs 225.39 µs 225.49 µs]
+prove/ark-vrf-bandersnatch-sha512-ws       time:   [230.34 µs 230.46 µs 230.58 µs]
 ```
 
 ## VRF Verify
 
 ```
 verify/schnorrkel                          time:   [89.168 µs 89.204 µs 89.245 µs]
-verify/ark-ec-vrf-ed25519                  time:   [268.86 µs 269.21 µs 269.65 µs]
-verify/ark-ec-vrf-bandersnatch-sha512-ed   time:   [389.57 µs 389.72 µs 389.90 µs]
-verify/ark-ec-vrf-bandersnatch-blake2-ed   time:   [483.51 µs 483.68 µs 483.85 µs]
-verify/ark-ec-vrf_bandersnatch-sha512-ws   time:   [492.60 µs 493.32 µs 494.16 µs]
+verify/ark-vrf-ed25519                     time:   [268.86 µs 269.21 µs 269.65 µs]
+verify/ark-vrf-bandersnatch-sha512-ed      time:   [389.57 µs 389.72 µs 389.90 µs]
+verify/ark-vrf-bandersnatch-blake2-ed      time:   [483.51 µs 483.68 µs 483.85 µs]
+verify/ark-vrf_bandersnatch-sha512-ws      time:   [492.60 µs 493.32 µs 494.16 µs]
 ```
-
 
 # Ring-VRFs Benches (ring size: 1023; domain size: 2048)
 

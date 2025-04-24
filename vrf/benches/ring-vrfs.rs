@@ -1,12 +1,16 @@
+use ark_vrf::reexports::ark_serialize::Compress;
 use criterion::{criterion_group, criterion_main, Criterion};
 use utils::run_bench;
 
 mod ark_vrf_bandersnatch_ed {
+    use ark_vrf::reexports::ark_serialize::{
+        CanonicalDeserialize, CanonicalSerialize, Compress, Validate,
+    };
     use ark_vrf::ring::{Prover, Verifier};
     use ark_vrf::suites::bandersnatch::*;
 
     struct TestContext {
-        ctx: RingProofParams,
+        params: RingProofParams,
         pks: Vec<Public>,
         sk: Secret,
         sk_idx: usize,
@@ -27,11 +31,28 @@ mod ark_vrf_bandersnatch_ed {
                 .collect();
             let sk = secret_from_u32(3);
             Self {
-                ctx,
+                params: ctx,
                 pks,
                 sk,
                 sk_idx: 3,
             }
+        }
+    }
+
+    pub fn deserialize_params(compress: Compress, ring_size: usize) -> impl Fn() {
+        println!(
+            "ring_size = {}, pcs_size = {}",
+            ring_size,
+            ark_vrf::ring::pcs_domain_size::<BandersnatchSha512Ell2>(ring_size)
+        );
+
+        let ctx = TestContext::new(ring_size);
+        let mut buf = vec![];
+        ctx.params.serialize_with_mode(&mut buf, compress).unwrap();
+        move || {
+            let _params =
+                RingProofParams::deserialize_with_mode(&mut &buf[..], compress, Validate::No)
+                    .unwrap();
         }
     }
 
@@ -40,7 +61,7 @@ mod ark_vrf_bandersnatch_ed {
 
         let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
         move || {
-            let _prover_key = ctx.ctx.prover_key(&pks);
+            let _prover_key = ctx.params.prover_key(&pks);
         }
     }
 
@@ -49,8 +70,8 @@ mod ark_vrf_bandersnatch_ed {
         let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
 
         move || {
-            let prover_key = ctx.ctx.prover_key(&pks);
-            let _prover = ctx.ctx.prover(prover_key, ctx.sk_idx);
+            let prover_key = ctx.params.prover_key(&pks);
+            let _prover = ctx.params.prover(prover_key, ctx.sk_idx);
         }
     }
 
@@ -61,8 +82,8 @@ mod ark_vrf_bandersnatch_ed {
         let output = ctx.sk.output(input);
 
         let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
-        let prover_key = ctx.ctx.prover_key(&pks);
-        let prover = ctx.ctx.prover(prover_key, ctx.sk_idx);
+        let prover_key = ctx.params.prover_key(&pks);
+        let prover = ctx.params.prover(prover_key, ctx.sk_idx);
 
         move || {
             let _proof = ctx.sk.prove(input, output, b"foo", &prover);
@@ -74,17 +95,17 @@ mod ark_vrf_bandersnatch_ed {
         let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
 
         move || {
-            let _verifier_key = ctx.ctx.verifier_key(&pks);
+            let _verifier_key = ctx.params.verifier_key(&pks);
         }
     }
 
     pub fn make_verifier(ring_size: usize) -> impl Fn() {
         let ctx = TestContext::new(ring_size);
         let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
-        let verifier_key = ctx.ctx.verifier_key(&pks);
+        let verifier_key = ctx.params.verifier_key(&pks);
 
         move || {
-            let _verifier = ctx.ctx.verifier(verifier_key.clone());
+            let _verifier = ctx.params.verifier(verifier_key.clone());
         }
     }
 
@@ -96,12 +117,12 @@ mod ark_vrf_bandersnatch_ed {
 
         let pks: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
 
-        let prover_key = ctx.ctx.prover_key(&pks);
-        let prover = ctx.ctx.prover(prover_key, ctx.sk_idx);
+        let prover_key = ctx.params.prover_key(&pks);
+        let prover = ctx.params.prover(prover_key, ctx.sk_idx);
         let proof = ctx.sk.prove(input, output, b"foo", &prover);
 
-        let verifier_key = ctx.ctx.verifier_key(&pks);
-        let verifier = ctx.ctx.verifier(verifier_key);
+        let verifier_key = ctx.params.verifier_key(&pks);
+        let verifier = ctx.params.verifier(verifier_key);
 
         move || {
             let _result = Public::verify(input, output, b"foo", &proof, &verifier).unwrap();
@@ -219,6 +240,20 @@ mod ark_vrf_bandersnatch_ws {
 
 fn vrfs(c: &mut Criterion) {
     const RING_SIZE: usize = 1023;
+
+    {
+        let mut group = c.benchmark_group("deserialize-params");
+        run_bench(
+            "ark-vrf-bandersnatch-ed-uncompressed",
+            &mut group,
+            ark_vrf_bandersnatch_ed::deserialize_params(Compress::No, RING_SIZE),
+        );
+        run_bench(
+            "ark-vrf-bandersnatch-ed-compressed",
+            &mut group,
+            ark_vrf_bandersnatch_ed::deserialize_params(Compress::Yes, RING_SIZE),
+        );
+    }
 
     {
         let mut group = c.benchmark_group("make-prover-key");
