@@ -10,3 +10,9 @@ members = [
     "hash",
     "vrf",
 ]
+
+[profile.bench]
+# Keep the crate in one codegen unit. With the default partitioning a
+# measurement depends on unrelated code in the same bench binary: adding the
+# other ring cases moved ring key construction by 17%.
+codegen-units = 1
