@@ -21,7 +21,7 @@ mod ark_ec_ring_vrf {
 
     impl TestContext {
         pub fn new() -> Self {
-            let params = RingSetup::from_seed(RING_SIZE, [0; 32]);
+            let params = RingSetup::from_seed_insecure(RING_SIZE, [0; 32]);
             let pks: Vec<_> = (0..RING_SIZE)
                 .map(|i| secret_from_u32(i as u32).public())
                 .collect();
@@ -47,15 +47,16 @@ mod ark_ec_ring_vrf {
         let io = ctx.sk.vrf_io(input);
 
         // Backend currently requires the wrapped type (plain affine points)
-        let pts: Vec<_> = ctx.pks.iter().map(|pk| pk.0).collect();
+        let pts: Vec<_> = ctx.pks.iter().map(|pk| pk.point()).collect();
 
         // Proof construction
         let prover_key = ctx.params.prover_key(&pts).unwrap();
-        let prover = ctx.params.ring_prover(prover_key, ctx.sk_idx);
+        let ring_ctx = ctx.params.ring_context();
+        let prover = ring_ctx.ring_prover(prover_key, ctx.sk_idx);
         let proof = ctx.sk.prove(io, b"aux", &prover);
 
         let verifier_key = ctx.params.verifier_key(&pts).unwrap();
-        let verifier = ctx.params.ring_verifier(verifier_key);
+        let verifier = ring_ctx.ring_verifier(verifier_key);
 
         assert!(Public::verify(io, b"aux", &proof, &verifier).is_ok());
     }

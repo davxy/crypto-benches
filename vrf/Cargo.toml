@@ -10,7 +10,7 @@ rand = "0.8.5"
 blake2 = "0.10.6"
 merlin = "3.0.0"
 schnorrkel = "0.11.5"
-ark-vrf = { version = "0.5.3", features =["full","parallel","asm"] }
+ark-vrf = { git = "https://github.com/davxy/ark-vrf", rev = "2b752e6342ef6de4715c3deb2eb38e2f3ae6382d", features =["full","parallel","asm"] }
 ark-std = "0.6.0"
 ark-ed-on-bls12-381-bandersnatch = "0.6.0"
 

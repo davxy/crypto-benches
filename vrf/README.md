@@ -2,59 +2,59 @@
 
 Comparison between:
 
-- [ark-vrf](https://crates.io/crates/ark-vrf) (0.5.3)
+- [ark-vrf](https://github.com/davxy/ark-vrf) (main, commit `2b752e6`)
 - [schnorrkel](https://crates.io/crates/schnorrkel) (0.11.5)
 
 Serial results use the `full` and `asm` features. Parallel results add
 `parallel`.
 
 A single VRF operation is too small for `parallel` to pay off. The rayon
-overhead dominates, and verify costs about three times more. schnorrkel does not
-use these features. Its two rows show the spread between the two runs.
+overhead dominates, and verify costs more than three times as much. schnorrkel
+does not use these features. Its two rows show the spread between the two runs.
 
 ## VRF Prove
 
 **Serial**
 ```
-prove/schnorrkel                       time:   [104.94 µs 105.68 µs 106.40 µs]
-prove/ark-vrf-bandersnatch-sha512-ed   time:   [162.76 µs 162.93 µs 163.10 µs]
-prove/ark-vrf-ed25519                  time:   [163.26 µs 164.32 µs 165.33 µs]
-prove/ark-vrf-bandersnatch-blake2-ed   time:   [233.57 µs 235.40 µs 237.04 µs]
-prove/ark-vrf-bandersnatch-sha512-ws   time:   [233.81 µs 236.57 µs 239.17 µs]
+prove/schnorrkel                       time:   [106.25 µs 106.56 µs 106.82 µs]
+prove/ark-vrf-ed25519                  time:   [116.37 µs 117.52 µs 118.60 µs]
+prove/ark-vrf-bandersnatch-sha512-ed   time:   [127.10 µs 128.57 µs 129.92 µs]
+prove/ark-vrf-bandersnatch-blake2-ed   time:   [160.41 µs 162.00 µs 164.14 µs]
+prove/ark-vrf-bandersnatch-sha512-ws   time:   [165.81 µs 167.34 µs 169.24 µs]
 ```
 
 **Parallel**
 ```
-prove/schnorrkel                       time:   [99.648 µs 100.31 µs 101.12 µs]
-prove/ark-vrf-ed25519                  time:   [198.69 µs 200.33 µs 202.33 µs]
-prove/ark-vrf-bandersnatch-sha512-ed   time:   [218.04 µs 219.41 µs 220.74 µs]
-prove/ark-vrf-bandersnatch-blake2-ed   time:   [279.08 µs 280.68 µs 282.18 µs]
-prove/ark-vrf-bandersnatch-sha512-ws   time:   [281.49 µs 282.97 µs 284.42 µs]
+prove/schnorrkel                       time:   [102.88 µs 103.49 µs 104.24 µs]
+prove/ark-vrf-ed25519                  time:   [113.21 µs 114.39 µs 115.50 µs]
+prove/ark-vrf-bandersnatch-sha512-ed   time:   [129.05 µs 130.14 µs 131.15 µs]
+prove/ark-vrf-bandersnatch-blake2-ed   time:   [157.31 µs 158.19 µs 159.34 µs]
+prove/ark-vrf-bandersnatch-sha512-ws   time:   [166.49 µs 168.34 µs 170.04 µs]
 ```
 
 ## VRF Verify
 
 **Serial**
 ```
-verify/schnorrkel                       time:   [92.941 µs 93.271 µs 93.535 µs]
-verify/ark-vrf-ed25519                  time:   [168.82 µs 170.68 µs 172.52 µs]
-verify/ark-vrf-bandersnatch-sha512-ed   time:   [186.86 µs 187.84 µs 188.65 µs]
-verify/ark-vrf-bandersnatch-blake2-ed   time:   [228.02 µs 228.78 µs 229.86 µs]
-verify/ark-vrf-bandersnatch-sha512-ws   time:   [241.92 µs 244.48 µs 246.61 µs]
+verify/schnorrkel                       time:   [85.712 µs 86.107 µs 86.567 µs]
+verify/ark-vrf-ed25519                  time:   [108.41 µs 108.83 µs 109.38 µs]
+verify/ark-vrf-bandersnatch-sha512-ed   time:   [121.35 µs 122.83 µs 124.25 µs]
+verify/ark-vrf-bandersnatch-sha512-ws   time:   [144.19 µs 145.85 µs 147.54 µs]
+verify/ark-vrf-bandersnatch-blake2-ed   time:   [151.96 µs 152.93 µs 153.74 µs]
 ```
 
 **Parallel**
 ```
-verify/schnorrkel                       time:   [89.183 µs 89.913 µs 90.773 µs]
-verify/ark-vrf-ed25519                  time:   [515.40 µs 523.02 µs 530.86 µs]
-verify/ark-vrf-bandersnatch-sha512-ed   time:   [527.75 µs 535.35 µs 542.78 µs]
-verify/ark-vrf-bandersnatch-sha512-ws   time:   [575.16 µs 582.21 µs 589.73 µs]
-verify/ark-vrf-bandersnatch-blake2-ed   time:   [581.93 µs 588.56 µs 595.38 µs]
+verify/schnorrkel                       time:   [86.460 µs 87.415 µs 88.297 µs]
+verify/ark-vrf-ed25519                  time:   [426.86 µs 433.08 µs 439.19 µs]
+verify/ark-vrf-bandersnatch-sha512-ed   time:   [433.53 µs 439.03 µs 444.49 µs]
+verify/ark-vrf-bandersnatch-sha512-ws   time:   [475.34 µs 480.72 µs 486.19 µs]
+verify/ark-vrf-bandersnatch-blake2-ed   time:   [482.29 µs 488.22 µs 493.88 µs]
 ```
 
 # Ring-VRFs Benches (ring size: 1023; domain size: 2048)
 
-- [ark-vrf](https://github.com/davxy/ark-vrf) (0.5.3)
+- [ark-vrf](https://github.com/davxy/ark-vrf) (main, commit `2b752e6`)
 
 Serial results use the `full` and `asm` features. Parallel results add
 `parallel`.
@@ -66,111 +66,111 @@ costs time on the small operations.
 
 **Serial**
 ```
-deserialize-params/ark-vrf-bandersnatch-ed-uncompressed   time:   [4.5747 ms 4.6128 ms 4.6506 ms]
-deserialize-params/ark-vrf-bandersnatch-ed-compressed     time:   [150.56 ms 151.68 ms 152.84 ms]
+deserialize-params/ark-vrf-bandersnatch-ed-uncompressed   time:   [4.5922 ms 4.6331 ms 4.6743 ms]
+deserialize-params/ark-vrf-bandersnatch-ed-compressed     time:   [149.86 ms 151.04 ms 152.27 ms]
 ```
 
 **Parallel**
 ```
-deserialize-params/ark-vrf-bandersnatch-ed-uncompressed   time:   [8.0738 ms 8.1546 ms 8.2425 ms]
-deserialize-params/ark-vrf-bandersnatch-ed-compressed     time:   [186.66 ms 186.87 ms 187.08 ms]
+deserialize-params/ark-vrf-bandersnatch-ed-uncompressed   time:   [7.9993 ms 8.0491 ms 8.0999 ms]
+deserialize-params/ark-vrf-bandersnatch-ed-compressed     time:   [164.85 ms 165.02 ms 165.20 ms]
 ```
 
 ## Prover Key Construction
 
 **Serial**
 ```
-make-prover-key/ark-vrf-bandersnatch-ed   time:   [110.51 ms 111.27 ms 112.09 ms]
-make-prover-key/ark-vrf-bandersnatch-ws   time:   [134.02 ms 135.16 ms 136.30 ms]
+make-prover-key/ark-vrf-bandersnatch-ed   time:   [132.05 ms 133.13 ms 134.21 ms]
+make-prover-key/ark-vrf-bandersnatch-ws   time:   [148.15 ms 149.43 ms 150.73 ms]
 ```
 
 **Parallel**
 ```
-make-prover-key/ark-vrf-bandersnatch-ed   time:   [30.905 ms 31.104 ms 31.304 ms]
-make-prover-key/ark-vrf-bandersnatch-ws   time:   [32.357 ms 32.553 ms 32.759 ms]
+make-prover-key/ark-vrf-bandersnatch-ed   time:   [30.493 ms 30.675 ms 30.860 ms]
+make-prover-key/ark-vrf-bandersnatch-ws   time:   [32.279 ms 32.501 ms 32.728 ms]
 ```
 
 ## Prover Construction
 
 **Serial**
 ```
-make-prover/ark-vrf-bandersnatch-ed   time:   [114.44 ms 115.36 ms 116.26 ms]
-make-prover/ark-vrf-bandersnatch-ws   time:   [132.10 ms 133.20 ms 134.29 ms]
+make-prover/ark-vrf-bandersnatch-ed   time:   [129.47 ms 130.70 ms 131.97 ms]
+make-prover/ark-vrf-bandersnatch-ws   time:   [149.83 ms 151.07 ms 152.29 ms]
 ```
 
 **Parallel**
 ```
-make-prover/ark-vrf-bandersnatch-ed   time:   [31.158 ms 31.353 ms 31.551 ms]
-make-prover/ark-vrf-bandersnatch-ws   time:   [32.364 ms 32.559 ms 32.756 ms]
+make-prover/ark-vrf-bandersnatch-ed   time:   [30.857 ms 31.053 ms 31.255 ms]
+make-prover/ark-vrf-bandersnatch-ws   time:   [32.420 ms 32.601 ms 32.778 ms]
 ```
 
 ## Prove
 
 **Serial**
 ```
-prove/ark-vrf-bandersnatch-ed   time:   [397.12 ms 400.16 ms 403.23 ms]
-prove/ark-vrf-bandersnatch-ws   time:   [403.52 ms 406.34 ms 409.10 ms]
+prove/ark-vrf-bandersnatch-ed   time:   [453.75 ms 457.21 ms 460.61 ms]
+prove/ark-vrf-bandersnatch-ws   time:   [459.61 ms 463.09 ms 466.53 ms]
 ```
 
 **Parallel**
 ```
-prove/ark-vrf-bandersnatch-ed   time:   [125.31 ms 125.90 ms 126.49 ms]
-prove/ark-vrf-bandersnatch-ws   time:   [125.70 ms 126.31 ms 126.92 ms]
+prove/ark-vrf-bandersnatch-ed   time:   [124.87 ms 125.44 ms 126.04 ms]
+prove/ark-vrf-bandersnatch-ws   time:   [125.57 ms 126.17 ms 126.77 ms]
 ```
 
 ## Verifier Key Construction
 
 **Serial**
 ```
-make-verifier-key/ark-vrf-bandersnatch-ed   time:   [116.43 ms 117.21 ms 117.95 ms]
-make-verifier-key/ark-vrf-bandersnatch-ws   time:   [133.70 ms 134.77 ms 135.84 ms]
+make-verifier-key/ark-vrf-bandersnatch-ed   time:   [128.91 ms 130.01 ms 131.12 ms]
+make-verifier-key/ark-vrf-bandersnatch-ws   time:   [149.07 ms 150.32 ms 151.58 ms]
 ```
 
 **Parallel**
 ```
-make-verifier-key/ark-vrf-bandersnatch-ed   time:   [31.068 ms 31.252 ms 31.436 ms]
-make-verifier-key/ark-vrf-bandersnatch-ws   time:   [32.376 ms 32.602 ms 32.857 ms]
+make-verifier-key/ark-vrf-bandersnatch-ed   time:   [30.733 ms 30.891 ms 31.051 ms]
+make-verifier-key/ark-vrf-bandersnatch-ws   time:   [32.282 ms 32.481 ms 32.688 ms]
 ```
 
 ## Verifier Construction
 
 **Serial**
 ```
-make-verifier/ark-vrf-bandersnatch-ws   time:   [255.64 µs 258.78 µs 261.69 µs]
-make-verifier/ark-vrf-bandersnatch-ed   time:   [261.56 µs 264.03 µs 266.27 µs]
+make-verifier/ark-vrf-bandersnatch-ed   time:   [259.96 µs 263.36 µs 266.80 µs]
+make-verifier/ark-vrf-bandersnatch-ws   time:   [268.24 µs 271.20 µs 274.10 µs]
 ```
 
 **Parallel**
 ```
-make-verifier/ark-vrf-bandersnatch-ed   time:   [258.12 µs 258.73 µs 259.56 µs]
-make-verifier/ark-vrf-bandersnatch-ws   time:   [259.09 µs 260.57 µs 262.41 µs]
+make-verifier/ark-vrf-bandersnatch-ed   time:   [252.63 µs 252.80 µs 252.98 µs]
+make-verifier/ark-vrf-bandersnatch-ws   time:   [258.54 µs 261.46 µs 264.50 µs]
 ```
 
 ## Verifier Construction (ring context included)
 
 **Serial**
 ```
-make-verifier-and-context/ark-vrf-bandersnatch-ed   time:   [3.8969 ms 3.9312 ms 3.9661 ms]
-make-verifier-and-context/ark-vrf-bandersnatch-ws   time:   [3.9802 ms 4.0129 ms 4.0449 ms]
+make-verifier-and-context/ark-vrf-bandersnatch-ed   time:   [3.9248 ms 3.9560 ms 3.9878 ms]
+make-verifier-and-context/ark-vrf-bandersnatch-ws   time:   [3.9610 ms 3.9930 ms 4.0250 ms]
 ```
 
 **Parallel**
 ```
-make-verifier-and-context/ark-vrf-bandersnatch-ed   time:   [7.1505 ms 7.2036 ms 7.2570 ms]
-make-verifier-and-context/ark-vrf-bandersnatch-ws   time:   [7.3033 ms 7.3524 ms 7.4049 ms]
+make-verifier-and-context/ark-vrf-bandersnatch-ws   time:   [7.2745 ms 7.3182 ms 7.3637 ms]
+make-verifier-and-context/ark-vrf-bandersnatch-ed   time:   [7.2703 ms 7.3218 ms 7.3768 ms]
 ```
 
 ## Verify
 
 **Serial**
 ```
-verify/ark-vrf-bandersnatch-ed   time:   [3.0825 ms 3.1075 ms 3.1322 ms]
-verify/ark-vrf-bandersnatch-ws   time:   [3.2190 ms 3.2422 ms 3.2638 ms]
+verify/ark-vrf-bandersnatch-ed   time:   [3.0345 ms 3.0593 ms 3.0848 ms]
+verify/ark-vrf-bandersnatch-ws   time:   [3.1334 ms 3.1601 ms 3.1874 ms]
 ```
 
 **Parallel**
 ```
-verify/ark-vrf-bandersnatch-ed   time:   [4.1511 ms 4.1633 ms 4.1755 ms]
-verify/ark-vrf-bandersnatch-ws   time:   [4.2651 ms 4.2761 ms 4.2873 ms]
+verify/ark-vrf-bandersnatch-ed   time:   [4.1851 ms 4.1977 ms 4.2107 ms]
+verify/ark-vrf-bandersnatch-ws   time:   [4.3220 ms 4.3352 ms 4.3486 ms]
 ```
 
