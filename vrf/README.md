@@ -2,8 +2,10 @@
 
 Comparison between:
 
-- [ark-vrf](https://crates.io/crates/ark-vrf) (0.1.0)
-- [schnorrkel](https://crates.io/crates/schnorrkel) (0.11.4)
+- [ark-vrf](https://crates.io/crates/ark-vrf) (0.5.3)
+- [schnorrkel](https://crates.io/crates/schnorrkel) (0.11.5)
+
+Timings below were measured with ark-vrf 0.1.0 and schnorrkel 0.11.4.
 
 ## VRF Prove
 
@@ -27,7 +29,9 @@ verify/ark-vrf_bandersnatch-sha512-ws      time:   [492.60 µs 493.32 µs 494.16
 
 # Ring-VRFs Benches (ring size: 1023; domain size: 2048)
 
-- [ark-vrf](https://github.com/davxy/ark-vrf) (0.1.0)
+- [ark-vrf](https://github.com/davxy/ark-vrf) (0.5.3)
+
+Timings below were measured with ark-vrf 0.1.0.
 
 ## Prover Key Construction
 

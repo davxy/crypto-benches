@@ -31,37 +31,35 @@ mod schnorrkel {
 mod ark_ec_vrf_ed25519 {
     use ark_std::UniformRand;
     use ark_vrf::{
-        ietf::{Prover, Verifier},
         suites::ed25519::*,
+        tiny::{Prover, Verifier},
     };
 
-    const SEED: &[u8] = b"test";
+    const SEED: [u8; 32] = [0; 32];
 
     fn dummy_input() -> Input {
         let mut rng = ark_std::test_rng();
         let p = AffinePoint::rand(&mut rng);
-        Input::from(p)
+        Input::from_affine_unchecked(p)
     }
 
     pub fn prove() -> impl Fn() {
         let secret = Secret::from_seed(SEED);
-        let input = dummy_input();
-        let output = secret.output(input);
+        let io = secret.vrf_io(dummy_input());
 
         move || {
-            let _sig = secret.prove(input, output, b"ad");
+            let _sig = secret.prove(io, b"ad");
         }
     }
 
     pub fn verify() -> impl Fn() {
         let secret = Secret::from_seed(SEED);
         let public = secret.public();
-        let input = dummy_input();
-        let output = secret.output(input);
-        let proof = secret.prove(input, output, b"ad");
+        let io = secret.vrf_io(dummy_input());
+        let proof = secret.prove(io, b"ad");
 
         move || {
-            let _ = public.verify(input, output, b"ad", &proof);
+            let _ = public.verify(io, b"ad", &proof);
         }
     }
 }
@@ -69,37 +67,35 @@ mod ark_ec_vrf_ed25519 {
 mod ark_ec_vrf_bandersnatch_sha512_ws {
     use ark_std::UniformRand;
     use ark_vrf::{
-        ietf::{Prover, Verifier},
         suites::bandersnatch_sw::*,
+        tiny::{Prover, Verifier},
     };
 
-    const SEED: &[u8] = b"test";
+    const SEED: [u8; 32] = [0; 32];
 
     fn dummy_input() -> Input {
         let mut rng = ark_std::test_rng();
         let p = AffinePoint::rand(&mut rng);
-        Input::from(p)
+        Input::from_affine_unchecked(p)
     }
 
     pub fn prove() -> impl Fn() {
         let secret = Secret::from_seed(SEED);
-        let input = dummy_input();
-        let output = secret.output(input);
+        let io = secret.vrf_io(dummy_input());
 
         move || {
-            let _proof = secret.prove(input, output, b"ad");
+            let _proof = secret.prove(io, b"ad");
         }
     }
 
     pub fn verify() -> impl Fn() {
         let secret = Secret::from_seed(SEED);
         let public = secret.public();
-        let input = dummy_input();
-        let output = secret.output(input);
-        let proof = secret.prove(input, output, b"ad");
+        let io = secret.vrf_io(dummy_input());
+        let proof = secret.prove(io, b"ad");
 
         move || {
-            let _ = public.verify(input, output, b"ad", &proof);
+            let _ = public.verify(io, b"ad", &proof);
         }
     }
 }
@@ -107,37 +103,35 @@ mod ark_ec_vrf_bandersnatch_sha512_ws {
 mod ark_ec_vrf_bandersnatch_sha512_ed {
     use ark_std::UniformRand;
     use ark_vrf::{
-        ietf::{Prover, Verifier},
         suites::bandersnatch::*,
+        tiny::{Prover, Verifier},
     };
 
-    const SEED: &[u8] = b"test";
+    const SEED: [u8; 32] = [0; 32];
 
     fn dummy_input() -> Input {
         let mut rng = ark_std::test_rng();
         let p = AffinePoint::rand(&mut rng);
-        Input::from(p)
+        Input::from_affine_unchecked(p)
     }
 
     pub fn prove() -> impl Fn() {
         let secret = Secret::from_seed(SEED);
-        let input = dummy_input();
-        let output = secret.output(input);
+        let io = secret.vrf_io(dummy_input());
 
         move || {
-            let _proof = secret.prove(input, output, b"ad");
+            let _proof = secret.prove(io, b"ad");
         }
     }
 
     pub fn verify() -> impl Fn() {
         let secret = Secret::from_seed(SEED);
         let public = secret.public();
-        let input = dummy_input();
-        let output = secret.output(input);
-        let proof = secret.prove(input, output, b"ad");
+        let io = secret.vrf_io(dummy_input());
+        let proof = secret.prove(io, b"ad");
 
         move || {
-            let _ = public.verify(input, output, b"ad", &proof);
+            let _ = public.verify(io, b"ad", &proof);
         }
     }
 }
@@ -145,51 +139,49 @@ mod ark_ec_vrf_bandersnatch_sha512_ed {
 mod ark_ec_vrf_bandersnatch_blake2_ed {
     use ark_std::UniformRand;
     use ark_vrf::{
-        ietf::{Prover, Verifier},
-        suite_types, Suite,
+        suite_types,
+        tiny::{Prover, Verifier},
+        utils::HashTranscript,
+        Suite,
     };
 
     #[derive(Debug, Clone, Copy)]
     struct BandersnatchBlake2b512;
 
     impl Suite for BandersnatchBlake2b512 {
-        const SUITE_ID: &'static [u8] = &[0x00];
-        const CHALLENGE_LEN: usize = 32;
+        const SUITE_ID: &'static [u8] = b"Bandersnatch-SW-BLAKE2-TAI-bench";
 
         type Affine = ark_ed_on_bls12_381_bandersnatch::SWAffine;
-        type Hasher = blake2::Blake2b512;
-        type Codec = ark_vrf::codec::ArkworksCodec;
+        type Transcript = HashTranscript<blake2::Blake2b512>;
     }
 
     suite_types!(BandersnatchBlake2b512);
 
-    const SEED: &[u8] = b"test";
+    const SEED: [u8; 32] = [0; 32];
 
     fn dummy_input() -> Input {
         let mut rng = ark_std::test_rng();
         let p = AffinePoint::rand(&mut rng);
-        Input::from(p)
+        Input::from_affine_unchecked(p)
     }
 
     pub fn prove() -> impl Fn() {
         let secret = Secret::from_seed(SEED);
-        let input = dummy_input();
-        let output = secret.output(input);
+        let io = secret.vrf_io(dummy_input());
 
         move || {
-            let _proof = secret.prove(input, output, b"ad");
+            let _proof = secret.prove(io, b"ad");
         }
     }
 
     pub fn verify() -> impl Fn() {
         let secret = Secret::from_seed(SEED);
         let public = secret.public();
-        let input = dummy_input();
-        let output = secret.output(input);
-        let signature = secret.prove(input, output, b"ad");
+        let io = secret.vrf_io(dummy_input());
+        let signature = secret.prove(io, b"ad");
 
         move || {
-            let _ = public.verify(input, output, b"ad", &signature);
+            let _ = public.verify(io, b"ad", &signature);
         }
     }
 }
